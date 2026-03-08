@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中医体质辨识 · 免疫力自测</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F0F4F8;--surface:#fff;--surface2:#F7F9FC;
+  --primary:#2E7D6B;--primary-light:#E8F5F1;
+  --accent:#E8614A;--navy:#1C3557;
+  --text:#1A2B3C;--text2:#4A6070;--text3:#8FA3B1;
+  --border:#E4ECF2;
+  --shadow:0 2px 16px rgba(28,53,87,.07);
+  --shadow-lg:0 8px 40px rgba(28,53,87,.13);
+  --r:16px;--rs:10px;
+}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(46,125,107,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(232,97,74,.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 16px 80px}
+
+/* Header */
+.header{text-align:center;padding:52px 24px 40px}
+.header-chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-light);color:var(--primary);font-size:11px;font-weight:500;letter-spacing:1.5px;padding:6px 16px;border-radius:100px;margin-bottom:20px}
+.header-chip::before{content:'●';font-size:7px}
+.header h1{font-family:'Playfair Display',serif;font-size:clamp(30px,6vw,46px);color:var(--navy);line-height:1.15;margin-bottom:12px;letter-spacing:1px}
+.header h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),#52B8A0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{font-size:12.5px;color:var(--text3);line-height:1.9}
+
+/* Progress */
+.prog-area{padding:0 4px 24px}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prog-label{font-size:12px;color:var(--text2);font-weight:500}
+.prog-pct{font-size:12px;color:var(--primary);font-weight:700}
+.prog-track{height:4px;background:var(--border);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(to right,var(--primary),#52B8A0);border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.step-pills{display:flex;gap:4px;margin-top:12px;justify-content:center}
+.pill{height:4px;border-radius:100px;background:var(--border);transition:all .3s;flex:1;max-width:32px}
+.pill.active{background:var(--primary);max-width:24px}
+.pill.done{background:rgba(46,125,107,.35)}
+
+/* Card */
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:28px 24px;margin-bottom:16px;border:1px solid var(--border);animation:slideUp .35s cubic-bezier(.4,0,.2,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* Const header */
+.ch{display:flex;align-items:center;gap:14px;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--border)}
+.ch-badge{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ch-name{font-size:18px;font-weight:700;margin-bottom:3px}
+.ch-meta{font-size:11px;color:var(--text3);line-height:1.6}
+.ch-counter{margin-left:auto;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:4px 12px;font-size:11px;color:var(--text3);white-space:nowrap;flex-shrink:0}
+
+/* Question */
+.qi{margin-bottom:24px}
+.qi:last-child{margin-bottom:0}
+.q-text{font-size:14px;font-weight:500;color:var(--text);line-height:1.7;margin-bottom:12px}
+.q-num{display:inline-block;width:22px;height:22px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text3);text-align:center;line-height:22px;margin-right:8px;vertical-align:middle}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:440px){.opts{grid-template-columns:repeat(2,1fr)}}
+.opt{padding:10px 4px;border:1.5px solid var(--border);border-radius:var(--rs);background:var(--surface2);font-family:inherit;font-size:12.5px;color:var(--text2);cursor:pointer;text-align:center;transition:all .18s;font-weight:400;position:relative}
+.opt:hover{border-color:var(--c,var(--primary));color:var(--c,var(--primary));background:var(--cl,var(--primary-light));transform:translateY(-1px)}
+.opt.sel{background:var(--c,var(--primary));border-color:var(--c,var(--primary));color:#fff;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.15);transform:translateY(-1px)}
+.opt.sel::after{content:'✓';position:absolute;top:3px;right:5px;font-size:9px;opacity:.7}
+
+/* Basic */
+.basic-q{margin-bottom:28px}
+.basic-label{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px}
+.basic-opts{display:flex;flex-wrap:wrap;gap:10px}
+.basic-btn{padding:10px 22px;border:1.5px solid var(--border);border-radius:100px;background:var(--surface2);font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;transition:all .18s}
+.basic-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.basic-btn.sel{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:500}
+
+/* Nav */
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}
+.btn-next{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:linear-gradient(135deg,var(--primary),#38957F);color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(46,125,107,.3)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(46,125,107,.4)}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-back{display:inline-flex;align-items:center;gap:6px;padding:13px 22px;border:1.5px solid var(--border);border-radius:100px;background:transparent;font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;transition:all .2s}
+.btn-back:hover{border-color:var(--text2);color:var(--text);background:var(--surface2)}
+
+/* Results */
+.result-hero{background:linear-gradient(135deg,var(--navy) 0%,#2A5F8F 100%);border-radius:var(--r);padding:40px 28px 36px;color:#fff;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);animation:slideUp .4s ease}
+.result-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.04)}
+.result-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:260px;height:260px;border-radius:50%;background:rgba(46,125,107,.2)}
+.r-eyebrow{font-size:11px;letter-spacing:2px;opacity:.55;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.r-eyebrow::before{content:'';display:block;width:20px;height:1px;background:rgba(255,255,255,.4)}
+.r-name{font-family:'Playfair Display',serif;font-size:clamp(36px,7vw,56px);font-weight:700;letter-spacing:4px;line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+.r-sub{font-size:13px;opacity:.7;letter-spacing:1px;margin-bottom:6px;position:relative;z-index:1}
+.r-meta{font-size:11px;opacity:.45;letter-spacing:1px;position:relative;z-index:1}
+.r-badge{position:absolute;top:28px;right:28px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 16px;text-align:center;backdrop-filter:blur(8px)}
+.r-badge-num{font-size:28px;font-weight:700;line-height:1}
+.r-badge-lbl{font-size:10px;opacity:.6;margin-top:2px;letter-spacing:1px}
+
+.rcard{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:24px;margin-bottom:12px;border:1px solid var(--border);animation:slideUp .4s ease}
+.rcard-title{font-size:13px;font-weight:600;color:var(--text2);letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.rcard-dot{width:8px;height:8px;border-radius:50%}
+.desc-text{font-size:13px;line-height:2;color:var(--text2)}
+.divider{height:1px;background:var(--border);margin:16px 0}
+.sec-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.sec-tag{padding:6px 16px;border-radius:100px;font-size:12px;font-weight:500;border:1.5px solid}
+
+/* Score */
+.score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:440px){.score-grid{grid-template-columns:1fr}}
+.score-item{display:flex;flex-direction:column;gap:6px}
+.score-top{display:flex;justify-content:space-between;align-items:center}
+.score-name{font-size:12px;font-weight:500;color:var(--text)}
+.score-val{font-size:11px;font-weight:700}
+.score-track{height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.score-bar{height:100%;border-radius:100px;transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0%}
+
+/* Advice */
+.advice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:500px){.advice-grid{grid-template-columns:1fr}}
+.advice-col{background:var(--surface2);border-radius:var(--rs);padding:16px;border:1px solid var(--border)}
+.advice-col h4{font-size:11px;font-weight:600;color:var(--primary);letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.advice-col ul{list-style:none;padding:0}
+.advice-col li{font-size:12px;line-height:1.8;color:var(--text2);padding:3px 0 3px 14px;position:relative;border-bottom:1px solid var(--border)}
+.advice-col li:last-child{border-bottom:none}
+.advice-col li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--primary);opacity:.5}
+
+.warning{background:#FFFBF0;border:1px solid #F0DC80;border-radius:var(--rs);padding:14px 18px;font-size:11.5px;color:#8B6914;line-height:1.9;margin-top:16px}
+.retake-btn{display:block;width:100%;padding:14px;border:1.5px solid var(--border);border-radius:100px;background:transparent;font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;text-align:center;margin-top:16px;transition:all .2s}
+.retake-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.simple-prog{display:flex;align-items:center;gap:10px;padding:16px 4px 20px}
+.simple-step{font-size:12px;font-weight:600;color:var(--text2);white-space:nowrap;min-width:36px}
+.simple-pct{font-size:12px;font-weight:700;color:var(--primary);white-space:nowrap;min-width:32px;text-align:right}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--border)}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <div id="mainHeader" class="header">
+    <div class="header-chip">免疫力自测系统</div>
+    <h1>了解你的<br><em>中医体质</em></h1>
+    <p>基于《中医体质分类与判定》国家标准（GB/T 2009）<br>结合现代免疫学 · 神经内分泌学 · 肠道微生物学</p>
+  </div>
+  <div id="progArea"></div>
+  <div id="pages"></div>
+</div>
+
+<script>
+const BASIC=[{id:'age',q:'您的年龄段',opts:['18—35岁','36—55岁','55岁以上']},{id:'lifestyle',q:'日常主要生活状态',opts:['上班族 / 学生','退休在家','自由职业 / 其他']}];
+const CONSTS=[
+  {id:'qiXu',name:'气虚质',color:'#2E7D6B',light:'#E8F5F1',icon:'🌿',sum:'元气不足，卫表不固',west:'NK细胞活性低，细胞免疫受抑',qs:['容易感冒，且感冒后恢复较慢（超过1周）','稍微活动就感到疲倦、气短，懒得说话','不运动也容易出汗，或稍动即大汗','说话声音偏低弱，平时不爱动、容易疲乏']},
+  {id:'yangXu',name:'阳虚质',color:'#1C5FAF',light:'#E8F0FB',icon:'❄️',sum:'命门火衰，温煦无力',west:'基础代谢率低，体温调节障碍',qs:['手脚发凉，即使夏天也比别人冷','比同龄人更怕冷，需要比别人多添衣物','精神不振，早晨难以起床，情绪偏低落','大便偏稀或不成形，容易腹泻']},
+  {id:'yinXu',name:'阴虚质',color:'#C0392B',light:'#FEF0ED',icon:'🔥',sum:'阴液亏少，虚热内生',west:'氧化应激增加，Th2偏移',qs:['手足心发热，午后面部有发热感','口干咽燥，喜喝冷饮，眼睛干涩','夜间睡眠差，入睡困难或易惊醒、盗汗','大便干燥，皮肤干燥缺水']},
+  {id:'tanShi',name:'痰湿质',color:'#2E8B57',light:'#E8F5EE',icon:'💧',sum:'脾失健运，痰湿凝聚',west:'慢性低度炎症，肠道菌群失衡',qs:['体型偏胖，腹部肥满松软','身体感觉沉重，头脑不清醒，像裹了层东西','口中发黏有异味，或早起痰多','饭后腹胀明显，肠胃容易不适']},
+  {id:'shiRe',name:'湿热质',color:'#B7770D',light:'#FEF6E4',icon:'☀️',sum:'湿热内蕴，三焦壅滞',west:'Th17/Treg失衡，LPS内毒素升高',qs:['面部油脂旺盛，容易长痤疮粉刺','口苦口干，大便偏黄黏腻，小便颜色深','身体容易感到燥热，心烦易怒']},
+  {id:'xueYu',name:'血瘀质',color:'#8B2A2A',light:'#FAEAEA',icon:'🌸',sum:'气滞血瘀，脉络不畅',west:'微循环障碍，免疫细胞归巢受阻',qs:['皮肤晦暗无光泽，容易出现色斑或瘀青','面唇颜色偏暗紫，或舌头颜色偏紫暗','身体容易出现固定位置的刺痛']},
+  {id:'qiYu',name:'气郁质',color:'#6B3FA0',light:'#F0EAFC',icon:'🌙',sum:'肝失疏泄，气机郁结',west:'HPA轴持续激活，皮质醇抑制免疫',qs:['情绪容易低落、郁闷，对事物缺乏兴趣','胸口有憋闷感，或肋骨两侧有胀痛','容易紧张焦虑，对压力敏感，难以放松','睡眠质量差，易受情绪影响']},
+  {id:'teBing',name:'特禀质',color:'#1A7A6E',light:'#E4F5F3',icon:'⚡',sum:'禀赋不足，营卫不和',west:'IgE过激，Treg功能不足',qs:['对花粉、灰尘、某些食物或药物容易过敏','季节变化或温差大时出现鼻痒、打喷嚏、皮肤瘙痒','有过敏性鼻炎、哮喘、湿疹等过敏性疾病史']}
+];
+const OPTS=[{l:'从不',v:0},{l:'偶尔',v:1},{l:'经常',v:2},{l:'总是',v:3}];
+const DET={
+  qiXu:{risk:'高',rc:'#E8614A',desc:'气虚表现较明显。气是生命活动的根本动力，气虚则卫表不固，外邪容易乘虚而入。现代研究证实，气虚质人群NK细胞活性和CD4⁺/CD8⁺比值显著偏低，呼吸道分泌型IgA（sIgA）下降30-40%，导致反复感冒和持续性疲劳。',ex:['八段锦：双手托天、调理脾胃须单举','每日散步30分钟（中低强度）','避免大量出汗的剧烈运动'],di:['黄芪15g + 红枣5枚泡水代茶','薏苡仁山药粥（健脾补气）','少食生冷油腻，忌过饱'],li:['23点前入睡（保护生长激素峰值）','避免过度劳累，适当午休20分钟','腹式深呼吸每日2次，每次5分钟']},
+  yangXu:{risk:'高',rc:'#E8614A',desc:'阳虚体质突出。阳气是人体的"发动机"，阳虚则温煦不足，免疫细胞活性随体温下降——体温每降1°C，免疫细胞活性下降约37%。寒冷环境下干扰素（IFN-γ）产生减少，固有免疫和适应性免疫效率均明显减弱。',ex:['五禽戏熊戏（激活肾阳）','慢跑或快走，运动后及时保暖','太极拳（温和激活阳气）'],di:['生姜红糖水（温中散寒）','羊肉汤、韭菜（温阳补肾）','忌西瓜、冷饮、冰淇淋等寒凉食物'],li:['艾灸关元、命门、足三里（每周2-3次）','热水泡脚（40°C，20分钟）','注意背部保暖（督脉阳气枢纽）']},
+  yinXu:{risk:'中高',rc:'#F0A040',desc:'阴虚热象明显。阴液是濡润滋养的基础，阴虚则虚火内生。现代研究表明阴虚质氧化应激升高，Th1/Th2失衡偏向Th2，端粒酶活性降低，夜间皮质醇偏高抑制T细胞增殖。',ex:['太极拳（慢速以柔养阴）','游泳（水性属阴，最适合阴虚质）','六字诀"呬"字功，避免大量出汗'],di:['百合莲子银耳汤（滋阴润燥）','枸杞麦冬泡水（滋补肝肾）','少食辛辣、油炸、烧烤食物'],li:['23点前入睡，保护褪黑素-免疫轴','减少熬夜和过度用眼','午间小憩15-20分钟']},
+  tanShi:{risk:'高',rc:'#E8614A',desc:'痰湿体质明显。脾主运化水湿，脾虚则湿聚成痰。内脏脂肪积累导致TNF-α、IL-6、CRP慢性升高（是平和质的2.3倍），肠漏增加LPS入血，形成持续性低度内毒素血症，持续消耗免疫资源。',ex:['快走、游泳、骑车（每周5次，每次45分钟）','八段锦全套（运化脾胃）','坚持规律运动，切忌间断'],di:['薏苡仁赤小豆粥（健脾祛湿）','陈皮茯苓茶（化痰利湿）','严控精制碳水、甜食、酒精'],li:['饭后散步30分钟（助运化）','避免久坐，每小时起身活动','保持居室干燥通风']},
+  shiRe:{risk:'中高',rc:'#F0A040',desc:'湿热内蕴较重。Th17细胞过度活跃，IL-17、IL-6炎症因子持续升高；肠道革兰阴性菌过度生长产生大量LPS，推动系统性炎症；皮肤微生物群失衡，屏障功能受损。',ex:['中等强度有氧运动，避免极度出汗后受凉','游泳（清热利湿）','避免高温瑜伽、桑拿等产热运动'],di:['绿豆汤（清热解毒）','苦瓜、蒲公英、冬瓜（清利湿热）','戒酒戒烟，少食辛辣烧烤'],li:['保持大便通畅（肠道排毒关键）','规律作息，避免熬夜','保持皮肤清洁']},
+  xueYu:{risk:'中高',rc:'#F0A040',desc:'血瘀状态较明显。微循环障碍导致免疫细胞归巢效率降低，到达感染灶时间延迟；血管内皮功能受损与IL-6、CRP升高正相关；组织慢性缺氧影响代谢废物清除，加速细胞老化。',ex:['五禽戏鸟戏（展翅动作，促进气血流通）','有氧运动改善微循环（每日30分钟）','冷热交替浴（促进血液循环）'],di:['山楂陈皮茶（活血化瘀）','黑木耳、红曲（改善微循环）','少食高脂油腻食物'],li:['严禁久坐（每小时起立活动5分钟）','睡前腿部抬高促进静脉回流','保持情绪舒畅，避免气滞']},
+  qiYu:{risk:'高',rc:'#E8614A',desc:'气郁状态突出。心理神经免疫学研究：长期压力使感冒病毒易感性增加2-3倍（Cohen等，NEJM 1991），抑郁患者NK细胞活性降低30-50%，皮质醇慢性升高直接加速病毒复制，迷走神经张力降低影响全身免疫调控。',ex:['太极拳、站桩（调节自主神经平衡）','户外有氧运动（阳光+运动双调5-羟色胺）','集体运动（社交改善气郁）'],di:['玫瑰花茶、茉莉花茶（疏肝解郁）','陈皮、佛手（理气解郁）','少饮酒（短期缓解长期加重）'],li:['腹式呼吸激活迷走神经（每日早晚各10分钟）','培养社交活动，避免自我孤立','情绪日记（客观化压力）']},
+  teBing:{risk:'特殊',rc:'#2E7D6B',desc:'特禀体质（过敏体质）明显。与其他体质不同，特禀质不是免疫低下，而是免疫调节紊乱——IgE介导I型超敏反应过激，Th1/Th2严重偏向Th2，Treg细胞功能不足。干预目标是「调节免疫平衡」而非「提升免疫」。',ex:['规律适度有氧运动调节Th1/Th2平衡','户外运动增加自然暴露，激活Treg细胞','游泳（注意氯气过敏）'],di:['益生菌食品（酸奶、泡菜）调节肠道菌群','玉屏风散：黄芪、白术、防风（固表止敏）','严格回避已知过敏原'],li:['适度接触自然环境（支持卫生假说）','使用空气净化器改善居室环境','过敏季节提前预防']}
+};
+
+let step=0,answers={},basic={};
+const TOTAL=1+CONSTS.length;
+
+function calc(){
+  const scores={};
+  CONSTS.forEach(c=>{const t=c.qs.reduce((s,_,i)=>s+(answers[`${c.id}_${i}`]||0),0);scores[c.id]=Math.round(t/(c.qs.length*3)*100)});
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  return{scores,primary:sorted[0],secondary:sorted.slice(1,3).filter(([,v])=>v>=35),isBalanced:sorted[0][1]<30};
+}
+
+function updateProg(){
+  const header=document.getElementById('mainHeader');
+  const el=document.getElementById('progArea');
+  if(step===0){
+    header.style.display='';
+    el.style.display='';
+    el.innerHTML=`<div class="prog-area"><div class="prog-top"><span class="prog-label">基础信息</span><span class="prog-pct">0%</span></div><div class="prog-track"><div class="prog-fill" style="width:0%"></div></div><div class="step-pills">${Array.from({length:TOTAL},(_,i)=>`<div class="pill${i===0?' active':''}"></div>`).join('')}</div></div>`;
+    return;
+  }
+  header.style.display='none';
+  if(step>=TOTAL){el.style.display='none';return}
+  const pct=Math.round(step/TOTAL*100);
+  el.innerHTML=`<div class="simple-prog"><span class="simple-step">${step} / ${CONSTS.length}</span><div class="prog-track" style="flex:1"><div class="prog-fill" style="width:${pct}%"></div></div><span class="simple-pct">${pct}%</span></div>`;
+}
+
+function renderBasic(){
+  const ok=BASIC.every(q=>basic[q.id]);
+  return`<div class="card"><div class="eyebrow">基础信息</div>${BASIC.map(q=>`<div class="basic-q"><div class="basic-label">${q.q}</div><div class="basic-opts">${q.opts.map(o=>`<button class="basic-btn${basic[q.id]===o?' sel':''}" data-basic="${q.id}" data-val="${o}" onclick="pickB('${q.id}','${o}')">${o}</button>`).join('')}</div></div>`).join('')}<div class="nav"><div></div><button id="nextBtn" class="btn-next" ${ok?'':'disabled'} onclick="goN()">开始测评 →</button></div></div>`;
+}
+
+function renderConst(idx){
+  const c=CONSTS[idx];
+  const done=c.qs.every((_,i)=>answers[`${c.id}_${i}`]!==undefined);
+  const answered=c.qs.filter((_,i)=>answers[`${c.id}_${i}`]!==undefined).length;
+  return`<div class="card"><div class="ch"><div class="ch-badge" style="background:${c.light}">${c.icon}</div><div><div class="ch-name" style="color:${c.color}">${c.name}</div><div class="ch-meta">中医：${c.sum}<br>西医：${c.west}</div></div><div id="counter" class="ch-counter">${answered}/${c.qs.length}</div></div>${c.qs.map((q,i)=>{const cur=answers[`${c.id}_${i}`];return`<div class="qi"><div class="q-text"><span class="q-num">${i+1}</span>${q}</div><div class="opts">${OPTS.map(o=>`<button class="opt${cur===o.v?' sel':''}" data-key="${c.id}_${i}" data-val="${o.v}" style="--c:${c.color};--cl:${c.light}" onclick="pickO('${c.id}',${i},${o.v})">${o.l}</button>`).join('')}</div></div>`}).join('')}<div class="nav"><button class="btn-back" onclick="goP()">← 上一步</button><button id="nextBtn" class="btn-next" ${done?'':'disabled'} onclick="goN()">${idx===CONSTS.length-1?'查看结果':'下一步'} →</button></div></div>`;
+}
+
+function renderResults(){
+  const{scores,primary,secondary,isBalanced}=calc();
+  const pc=CONSTS.find(c=>c.id===primary[0]);
+  const det=DET[primary[0]];
+  let html=`<div class="result-hero"><div class="r-eyebrow">体质辨识报告</div><div class="r-name">${isBalanced?'平和质':pc.name}</div><div class="r-sub">${isBalanced?'气血调和 · 阴阳平衡 · 正气充足':pc.sum}</div><div class="r-meta">${basic.age||''} · ${basic.lifestyle||''}</div>${!isBalanced?`<div class="r-badge"><div class="r-badge-num">${primary[1]}</div><div class="r-badge-lbl">偏颇度%</div></div>`:''}</div>`;
+  if(!isBalanced){
+    html+=`<div class="rcard"><div class="rcard-title"><div class="rcard-dot" style="background:${pc.color}"></div>体质分析与免疫关联</div><p class="desc-text">${det.desc}</p>${secondary.length?`<div class="divider"></div><div style="font-size:11px;color:var(--text3);margin-bottom:8px;letter-spacing:1px">兼夹体质倾向</div><div class="sec-tags">${secondary.map(([id])=>{const c2=CONSTS.find(x=>x.id===id);return`<div class="sec-tag" style="border-color:${c2.color};color:${c2.color};background:${c2.light}">${c2.icon} ${c2.name}</div>`}).join('')}</div>`:''}</div>`;
+    html+=`<div class="rcard"><div class="rcard-title"><div class="rcard-dot" style="background:var(--primary)"></div>个性化改善方案</div><div class="advice-grid"><div class="advice-col"><h4>🏃 运动处方</h4><ul>${det.ex.map(e=>`<li>${e}</li>`).join('')}</ul></div><div class="advice-col"><h4>🥗 饮食调养</h4><ul>${det.di.map(d=>`<li>${d}</li>`).join('')}</ul></div><div class="advice-col"><h4>🌙 生活起居</h4><ul>${det.li.map(l=>`<li>${l}</li>`).join('')}</ul></div></div></div>`;
+  }
+  html+=`<div class="rcard"><div class="rcard-title"><div class="rcard-dot" style="background:#B7770D"></div>八维体质评分</div><div class="score-grid">${CONSTS.map(c=>{const s=scores[c.id]||0;const col=s>=60?c.color:s>=35?c.color+'AA':'#C8D8E4';return`<div class="score-item"><div class="score-top"><div class="score-name">${c.icon} ${c.name}</div><div class="score-val" style="color:${col}">${s}%</div></div><div class="score-track"><div class="score-bar" id="sb_${c.id}" style="background:${col}"></div></div></div>`}).join('')}</div></div>`;
+  html+=`<div class="warning">⚠️ 本测评基于《中医体质分类与判定》国家标准（GB/T 2009），结合现代免疫学研究，仅供健康参考，不作为医学诊断依据。如有健康问题，请咨询专业医师。</div><button class="retake-btn" onclick="retake()">重新测评</button>`;
+  return html;
+}
+
+function render(){
+  updateProg();
+  const p=document.getElementById('pages');
+  if(step===0)p.innerHTML=renderBasic();
+  else if(step<=CONSTS.length)p.innerHTML=renderConst(step-1);
+  else{
+    p.innerHTML=renderResults();
+    const{scores}=calc();
+    setTimeout(()=>CONSTS.forEach(c=>{const el=document.getElementById('sb_'+c.id);if(el)el.style.width=(scores[c.id]||0)+'%'}),150);
+  }
+}
+
+function pickB(id,v){
+  basic[id]=v;
+  document.querySelectorAll(`[data-basic="${id}"]`).forEach(btn=>{
+    btn.classList.toggle('sel', btn.dataset.val===v);
+  });
+  const ok=BASIC.every(q=>basic[q.id]);
+  const nextBtn=document.getElementById('nextBtn');
+  if(nextBtn) nextBtn.disabled=!ok;
+}
+
+function pickO(id,qi,v){
+  answers[`${id}_${qi}`]=v;
+  document.querySelectorAll(`[data-key="${id}_${qi}"]`).forEach(btn=>{
+    btn.classList.toggle('sel', +btn.dataset.val===v);
+  });
+  const c=CONSTS.find(x=>x.id===id);
+  const answered=c.qs.filter((_,i)=>answers[`${id}_${i}`]!==undefined).length;
+  const counter=document.getElementById('counter');
+  if(counter) counter.textContent=`${answered}/${c.qs.length}`;
+  const done=c.qs.every((_,i)=>answers[`${id}_${i}`]!==undefined);
+  const nextBtn=document.getElementById('nextBtn');
+  if(nextBtn) nextBtn.disabled=!done;
+}
+
+function goN(){
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(step===TOTAL-1){
+    const{scores,primary,secondary}=calc();
+    const order=['qiXu','yangXu','yinXu','tanShi','shiRe','xueYu','qiYu','teBing'];
+    const scoreStr=order.map(id=>scores[id]||0).join(',');
+    const c2=secondary.length?secondary[0][0]:'';
+    const c=CONSTS.find(x=>x.id===primary[0]);
+    const symIdxs=c?c.qs.map((_,i)=>answers[`${c.id}_${i}`]>=2?i:-1).filter(x=>x>=0):[];
+    const params=new URLSearchParams({
+      c:primary[0],
+      c2,
+      age:basic.age||'',
+      ls:basic.lifestyle||'',
+      s:scoreStr,
+      syms:symIdxs.join(',')
+    });
+    window.location.href='report.html?'+params.toString();
+    return;
+  }
+  step=Math.min(step+1,TOTAL);
+  render();
+}
+function goP(){window.scrollTo({top:0,behavior:'smooth'});step=Math.max(0,step-1);render()}
+function retake(){step=0;answers={};basic={};window.scrollTo({top:0,behavior:'smooth'});render()}
+
+render();
+</script>
+
+</body>
+</html>
