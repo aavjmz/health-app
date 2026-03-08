@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的中医体质报告</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F2F6F9;
+  --surface:#fff;
+  --surface2:#F7FAFB;
+  --navy:#0F2B46;
+  --primary:#2A7F6F;
+  --primary-light:#E5F4F1;
+  --accent:#E05C3A;
+  --gold:#C09030;
+  --gold-light:#FDF6E3;
+  --text:#1A2B38;
+  --text2:#4A6070;
+  --text3:#8FA3B1;
+  --border:#E2EBF0;
+  --shadow:0 2px 20px rgba(15,43,70,.07);
+  --shadow-lg:0 12px 48px rgba(15,43,70,.14);
+  --r:20px;--rs:12px;
+}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── Layout ── */
+.page{max-width:720px;margin:0 auto;padding:0 16px 80px}
+
+/* ── Hero ── */
+.hero{
+position:relative;
+background:var(--navy);
+border-radius:0 0 32px 32px;
+padding:52px 32px 48px;
+color:#fff;
+overflow:hidden;
+margin-bottom:24px;
+}
+.hero-orb1{position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(42,127,111,.35),transparent 70%)}
+.hero-orb2{position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(224,92,58,.2),transparent 70%)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:1.5px;opacity:.6;border:1px solid rgba(255,255,255,.2);padding:5px 14px;border-radius:100px}
+.hero-date{font-size:11px;opacity:.4;letter-spacing:1px}
+.hero-body{position:relative;z-index:1}
+.hero-label{font-size:11px;letter-spacing:2px;opacity:.5;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hero-label::before{content:'';display:block;width:24px;height:1px;background:rgba(255,255,255,.4)}
+.hero-name{font-family:'Lora',serif;font-size:clamp(40px,8vw,62px);font-weight:600;letter-spacing:3px;line-height:1.05;margin-bottom:12px}
+.hero-name em{font-style:italic;opacity:.7;font-size:.55em;display:block;letter-spacing:4px;margin-bottom:4px}
+.hero-tagline{font-size:13px;opacity:.65;letter-spacing:1px;line-height:1.7;margin-bottom:24px}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:6px 16px;font-size:11px;letter-spacing:1px;backdrop-filter:blur(4px)}
+.hero-pill.hl{background:rgba(42,127,111,.4);border-color:rgba(42,127,111,.5)}
+.score-arc{
+position:absolute;right:28px;bottom:40px;z-index:1;
+width:80px;height:80px;
+}
+.score-arc svg{width:80px;height:80px}
+.score-arc-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-arc-num{font-size:22px;font-weight:700;line-height:1}
+.score-arc-lbl{font-size:9px;opacity:.5;letter-spacing:1px;margin-top:2px}
+
+/* ── Section ── */
+.section{margin-bottom:16px}
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.card-head{padding:20px 24px 0}
+.card-body{padding:20px 24px 24px}
+.sec-title{font-size:12px;font-weight:600;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-title-dot{width:6px;height:6px;border-radius:50%}
+
+/* ── Symptom reflection ── */
+.sym-list{display:flex;flex-direction:column;gap:10px}
+.sym-item{
+display:flex;align-items:flex-start;gap:12px;
+background:var(--surface2);border-radius:var(--rs);
+padding:14px 16px;border:1px solid var(--border);
+}
+.sym-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.sym-text{font-size:13px;line-height:1.7;color:var(--text2)}
+.sym-text strong{color:var(--text);font-weight:600}
+
+/* ── TCM West dual column ── */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.dual{grid-template-columns:1fr}}
+.dual-card{border-radius:var(--rs);padding:18px;border:1px solid var(--border)}
+.dual-card.tcm{background:var(--gold-light);border-color:#E8D080}
+.dual-card.west{background:var(--primary-light);border-color:#B0D8D0}
+.dual-label{font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.dual-label.tcm-l{color:var(--gold)}
+.dual-label.west-l{color:var(--primary)}
+.dual-content{font-size:12.5px;line-height:1.9;color:var(--text2)}
+.dual-content b{color:var(--text);font-weight:600}
+
+/* ── Timeline ── */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:16px;position:relative}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:19px;top:40px;bottom:-8px;width:2px;background:linear-gradient(to bottom,var(--border),transparent)}
+.tl-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:2px solid var(--border);background:var(--surface)}
+.tl-dot.active{border-color:var(--primary);background:var(--primary-light)}
+.tl-content{padding-bottom:24px;flex:1}
+.tl-phase{font-size:11px;font-weight:600;letter-spacing:1.5px;color:var(--text3);margin-bottom:4px}
+.tl-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px}
+.tl-items{display:flex;flex-direction:column;gap:6px}
+.tl-row{font-size:12.5px;color:var(--text2);line-height:1.6;padding-left:12px;position:relative}
+.tl-row::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--primary);opacity:.5}
+
+/* ── Action cards ── */
+.action-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:480px){.action-grid{grid-template-columns:1fr}}
+.action-card{border-radius:var(--rs);padding:20px 16px;border:1px solid var(--border);position:relative;overflow:hidden}
+.action-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;opacity:.12}
+.action-card.ex{background:#F0FAF6;border-color:#B8E0D4}.action-card.ex::before{background:var(--primary)}
+.action-card.diet{background:#FDF6F0;border-color:#F0D0B0}.action-card.diet::before{background:var(--accent)}
+.action-card.life{background:#F4F0FA;border-color:#C8B8E8}.action-card.life::before{background:#7060B0}
+.action-emoji{font-size:26px;margin-bottom:10px;display:block}
+.action-type{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--text3);margin-bottom:6px}
+.action-main{font-size:13px;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:8px}
+.action-sub{font-size:11px;color:var(--text2);line-height:1.7}
+
+/* ── Score chart ── */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:420px){.score-grid{grid-template-columns:1fr}}
+.score-row{display:flex;flex-direction:column;gap:5px}
+.score-top{display:flex;justify-content:space-between;align-items:center}
+.score-name{font-size:12px;font-weight:500;color:var(--text)}
+.score-num{font-size:11px;font-weight:700}
+.score-track{height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.score-fill{height:100%;border-radius:100px;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+
+/* ── Secondary constitution ── */
+.sec-const{background:var(--surface2);border-radius:var(--rs);padding:16px;border:1px solid var(--border);display:flex;gap:14px;align-items:flex-start}
+.sec-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.sec-info-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.sec-info-desc{font-size:12px;color:var(--text2);line-height:1.7}
+
+/* ── Share bar ── */
+.share-bar{
+background:var(--navy);
+border-radius:var(--r);
+padding:24px;
+color:#fff;
+display:flex;align-items:center;justify-content:space-between;
+gap:16px;flex-wrap:wrap;
+}
+.share-text h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.share-text p{font-size:12px;opacity:.55}
+.share-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-share{padding:10px 20px;border-radius:100px;font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;border:none}
+.btn-share.primary{background:var(--primary);color:#fff}
+.btn-share.primary:hover{background:#1E6B5D}
+.btn-share.ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.btn-share.ghost:hover{background:rgba(255,255,255,.18)}
+
+/* ── Animations ── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease}
+.fade-up.in{opacity:1;transform:none}
+
+/* ── Print ── */
+@media print{
+body{background:#fff}
+.share-bar,.btn-share{display:none}
+.hero{border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.card{box-shadow:none;border:1px solid #ddd}
+}
+
+/* ── Divider ── */
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500;border:1.5px solid;margin:3px}
+
+/* ── Notice ── */
+.notice{background:var(--gold-light);border:1px solid #E8D480;border-radius:var(--rs);padding:14px 18px;font-size:12px;color:#7A6010;line-height:1.9;margin-top:16px}
+</style>
+
+</head>
+<body>
+<div class="page" id="page">
+  <!-- 动态渲染 -->
+</div>
+
+<script>
+// ── 数据库 ─────────────────────────────────────────────────────────────────────
+const DB = {
+  qiXu:{
+    name:'气虚质', icon:'🌿', color:'#2A7F6F', light:'#E5F4F1',
+    tagline:'气不够用，身体在透支',
+    tcmMech:'肺卫不固，脾失运化，元气亏虚。气虚则无力推动血液运行，脏腑失养，卫外功能下降，外邪趁虚而入。',
+    westMech:'NK细胞活性下降，CD4⁺/CD8⁺比值偏低；呼吸道sIgA分泌减少30-40%；线粒体ATP合成效率不足，慢性低能量状态。',
+    symptoms:[
+      {q:'稍微活动就感到疲倦、气短，懒得说话', explain:'气不够用了。中医称"气虚不运"，西医对应线粒体产能效率低，细胞ATP供应不足。'},
+      {q:'容易感冒，且感冒后恢复较慢（超过1周）', explain:'卫气不固，外邪易侵。对应呼吸道sIgA（分泌型免疫球蛋白A）分泌量下降，黏膜第一道防线薄弱。'},
+      {q:'不运动也容易出汗，或稍动即大汗', explain:'气虚不能固摄津液，汗液外泄。同时提示自主神经张力偏低，体温调节效率不佳。'},
+    ],
+    tcmRx:{
+      ex:['八段锦「双手托天理三焦」——调节三焦气机，补益肺脾','八段锦「调理脾胃须单举」——健脾补气，强化中气','每日散步30分钟，微微出汗为宜，切忌剧烈运动耗气'],
+      diet:['黄芪15g + 红枣5枚 + 枸杞10粒，泡水代茶（补气固表）','山药薏苡仁粥——健脾益气，每周3次','忌生冷、油腻、过饱；少量多餐，护脾气'],
+      life:['23点前入睡，保护凌晨1-3点生长激素分泌峰值','腹式深呼吸：每日2次，每次5-8分钟（激活副交感神经）','午休15-20分钟，子时午时是养气的黄金时段'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'建立基础',icon:'🌱',items:['每天做八段锦前两式，10分钟即可','睡眠时间固定，23点前入睡','每天喝1杯黄芪红枣水']},
+      {phase:'第31-60天',title:'强化气机',icon:'🌿',items:['八段锦完整一套（约20分钟）','加入散步，每次30分钟，每周5次','饮食调整：减少生冷，增加山药']},
+      {phase:'第61-90天',title:'巩固评估',icon:'🌳',items:['保持上述习惯，评估感冒频率变化','尝试站桩基础功（补气效果更强）','重新做一次体质测评，对比变化']},
+    ],
+    actions:{
+      ex:{main:'八段锦前两式', sub:'每天早晨10分钟\n动作：双手托天 + 单举脾胃'},
+      diet:{main:'黄芪红枣水', sub:'黄芪15g + 红枣5枚\n早晨泡水，代茶饮全天'},
+      life:{main:'23点前入睡', sub:'固定作息最补气\n午休15分钟加持'},
+    },
+  },
+  yangXu:{
+    name:'阳虚质', icon:'❄️', color:'#1C5FAF', light:'#E8F0FB',
+    tagline:'身体的"暖气"不够用了',
+    tcmMech:'命门火衰，脾肾阳虚，温煦推动无力。阳气不足，则气化不利，卫阳不充于表，寒邪易侵，脏腑功能减退。',
+    westMech:'基础代谢率偏低，产热不足；甲状腺功能偏低倾向（T3/T4偏低区间）；体温降低直接抑制免疫细胞活性——体温每降1°C，免疫细胞活性下降约37%。',
+    symptoms:[
+      {q:'手脚发凉，即使夏天也比别人冷', explain:'阳气不能温煦四末。对应外周血管收缩，末梢循环不足，产热效率低下。'},
+      {q:'精神不振，早晨难以起床，情绪偏低落', explain:'肾阳不振，心神失温。对应皮质醇晨峰低下，HPA轴反应性减弱，5-羟色胺合成不足。'},
+      {q:'大便偏稀或不成形，容易腹泻', explain:'脾阳虚则运化失司，水湿不化。对应肠道蠕动减慢，肠道菌群多样性下降。'},
+    ],
+    tcmRx:{
+      ex:['五禽戏「熊戏」——重心下沉蹲踞，激活肾阳，温化下焦','慢跑或快走，运动后立即保暖，切忌汗出受风','太极拳（杨式24式）——缓慢连绵，温和激活阳气'],
+      diet:['生姜红糖水（温中散寒，每日早晨空腹）','羊肉炖当归汤（温阳补血，每周1-2次）','严格忌食西瓜、冷饮、冰淇淋；少食白萝卜、螃蟹'],
+      life:['艾灸关元、命门、足三里（每周2-3次，每穴10分钟）','每晚热水泡脚（40°C，20分钟，微微发汗）','注重背部和腰部保暖（督脉是阳气总枢纽）'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'点燃阳气',icon:'🕯️',items:['每晚热水泡脚，20分钟','早晨喝一杯生姜红糖水','开始五禽戏熊戏练习，每天10分钟']},
+      {phase:'第31-60天',title:'温煦全身',icon:'☀️',items:['加入艾灸，关元和足三里各10分钟','饮食调整：羊肉汤每周1次','太极拳入门，每次20分钟']},
+      {phase:'第61-90天',title:'巩固阳气',icon:'🌄',items:['艾灸坚持，加入命门穴','早晨户外散步，接受阳光（补充维生素D）','重新测评，评估怕冷症状改善']},
+    ],
+    actions:{
+      ex:{main:'五禽戏·熊戏', sub:'每天早晨10分钟\n重心沉蹲，激活肾阳'},
+      diet:{main:'生姜红糖水', sub:'每早空腹一杯\n温中散寒，暖胃护阳'},
+      life:{main:'艾灸+泡脚', sub:'每周艾灸2次\n每晚泡脚20分钟'},
+    },
+  },
+  yinXu:{
+    name:'阴虚质', icon:'🔥', color:'#C0392B', light:'#FEF0ED',
+    tagline:'内火偏旺，阴液在亏耗',
+    tcmMech:'肾阴亏虚，水不制火，虚热内生。阴液不足则濡润失职，虚火上炎灼伤津液，形成恶性循环，导致全身阴阳失调。',
+    westMech:'氧化应激水平升高（活性氧ROS增多）；端粒酶活性降低，细胞老化加速；Th1/Th2失衡偏向Th2；夜间皮质醇偏高抑制T细胞增殖和NK细胞活性。',
+    symptoms:[
+      {q:'手足心发热，午后面部有发热感', explain:'阴虚生内热，虚热浮越于外。对应基础代谢率偏高，夜间皮质醇水平偏高，产热增加。'},
+      {q:'夜间睡眠差，入睡困难或容易惊醒、盗汗', explain:'虚火扰心，心神不宁。对应皮质醇昼夜节律紊乱，夜间交感神经兴奋性偏高，褪黑素分泌受抑。'},
+      {q:'口干咽燥，喜喝冷饮，眼睛干涩', explain:'阴液不足，津液不能上承。对应黏膜分泌功能减弱，泪液和唾液分泌减少。'},
+    ],
+    tcmRx:{
+      ex:['太极拳（慢速，以柔养阴）——每次30分钟，动作舒展缓慢','游泳（水性属阴，最适合阴虚质）——每周3次','六字诀「呬」字功（润肺滋阴）——避免大量出汗的运动'],
+      diet:['百合莲子银耳羹（滋阴润燥，每周3次）','枸杞麦冬泡水（滋补肝肾之阴，代茶饮）','忌辛辣、油炸、烧烤；少食韭菜、龙眼等温燥食物'],
+      life:['23点前入睡（保护褪黑素分泌-免疫轴）','减少熬夜和长时间用眼（耗伤肝阴）','午间小憩15分钟（子午流注，午时养阴）'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'静心养阴',icon:'🌙',items:['23点前入睡，雷打不动','枸杞麦冬水，每日代茶饮','六字诀「呬」字功，每日5分钟']},
+      {phase:'第31-60天',title:'滋阴清热',icon:'💧',items:['太极拳入门，每周3次','百合银耳羹，每周2次','减少辛辣食物摄入']},
+      {phase:'第61-90天',title:'巩固阴液',icon:'✨',items:['游泳加入计划，每周1次','坚持睡眠节律，评估睡眠质量','重新测评，关注手足心热改善']},
+    ],
+    actions:{
+      ex:{main:'太极拳·慢练', sub:'每次30分钟，每周3次\n慢速舒展，以柔养阴'},
+      diet:{main:'枸杞麦冬茶', sub:'枸杞10粒+麦冬5g\n代茶饮，滋阴生津'},
+      life:{main:'23点前入睡', sub:'保护褪黑素峰值\n午休15分钟养阴'},
+    },
+  },
+  tanShi:{
+    name:'痰湿质', icon:'💧', color:'#2E8B57', light:'#E8F5EE',
+    tagline:'身体"湿气"太重，需要排水清道',
+    tcmMech:'脾失健运，水湿内停，聚湿生痰。痰湿流注脏腑经络，阻滞气机，影响气血运行，形成痰湿体质的恶性循环。',
+    westMech:'内脏脂肪积累→脂肪因子失调；TNF-α、IL-6、CRP慢性升高（是平和质2.3倍）；肠漏导致LPS入血，形成持续性低度内毒素血症；肠道厚壁菌门/拟杆菌门比值升高，菌群多样性下降。',
+    symptoms:[
+      {q:'身体感觉沉重，头脑不清醒，像裹了层东西', explain:'痰湿蒙蔽清窍，阻滞气机。对应慢性低度炎症，细胞因子（IL-6）影响神经系统，产生"脑雾"现象。'},
+      {q:'体型偏胖，腹部肥满松软', explain:'脾虚运化失司，水湿停聚。对应内脏脂肪积累，脂肪因子分泌失调，代谢综合征风险增加。'},
+      {q:'口中发黏有异味，或早起痰多', explain:'痰湿上泛，浊气上逆。对应口腔和消化道菌群失衡，产气菌过度增殖。'},
+    ],
+    tcmRx:{
+      ex:['八段锦完整套路（健脾祛湿核心运动）——每天20分钟','有氧运动：快走、游泳、骑行，每次45分钟，每周5次','运动贵在坚持，切忌三天打鱼两天晒网'],
+      diet:['薏苡仁赤小豆粥（健脾祛湿，早餐首选）','陈皮茯苓茶（化痰利湿，饭后代茶饮）','严格控制精制碳水、甜食、酒精、油腻，这是关键'],
+      life:['饭后散步30分钟（助脾胃运化，切勿饭后即卧）','严禁久坐，每小时起身活动5-10分钟','保持居室干燥通风，避免潮湿环境（湿气外入加重内湿）'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'启动代谢',icon:'🚶',items:['每餐后散步20分钟','薏苡仁赤小豆粥，每周3次早餐','减少精制碳水摄入50%']},
+      {phase:'第31-60天',title:'强化运动',icon:'🏊',items:['有氧运动升级：快走45分钟，每周5次','陈皮茯苓茶，每日饮用','八段锦完整套路加入晨练']},
+      {phase:'第61-90天',title:'巩固习惯',icon:'💪',items:['游泳加入计划（最佳祛湿运动）','饮食习惯已建立，继续维持','重新测评，关注体重和头脑清醒度']},
+    ],
+    actions:{
+      ex:{main:'有氧运动45分钟', sub:'快走/游泳/骑行\n每周5次，坚持是关键'},
+      diet:{main:'薏苡仁赤小豆粥', sub:'早餐首选，每周3次\n健脾祛湿效果显著'},
+      life:{main:'饭后散步30分钟', sub:'助运化，切勿饭后卧\n每小时起身活动'},
+    },
+  },
+  shiRe:{
+    name:'湿热质', icon:'☀️', color:'#B7770D', light:'#FEF6E4',
+    tagline:'内有湿热，身体在"发炎"',
+    tcmMech:'湿热交蒸，三焦壅滞。肝胆疏泄失司，脾胃湿热蕴结，湿热之邪循经上犯，外溢肌肤，下注二便，表现为多系统炎症反应。',
+    westMech:'Th17细胞过度活跃，IL-17、IL-6持续升高；肠道革兰阴性菌过度生长，LPS内毒素入血；皮肤微生物群失衡，痤疮丙酸杆菌增殖；Th17/Treg失衡与炎症性肠病、银屑病高度相关。',
+    symptoms:[
+      {q:'面部油脂旺盛，容易长痤疮粉刺', explain:'湿热上蒸于面，热邪熏灼皮肤。对应皮肤微生物群失衡，痤疮丙酸杆菌过度增殖，皮脂腺分泌旺盛。'},
+      {q:'口苦口干，大便偏黄黏腻，小便颜色深', explain:'湿热蕴结肝胆，胆汁上逆则口苦；湿热下注则大便黏滞，小便黄赤。对应胆汁酸代谢异常，肠道菌群产气增多。'},
+      {q:'身体容易感到燥热，心烦易怒', explain:'湿热扰心，肝气郁化热。对应Th17细胞因子持续升高，慢性炎症影响神经系统，诱发情绪波动。'},
+    ],
+    tcmRx:{
+      ex:['中等强度有氧运动（快走、慢跑），微汗即止，切忌极度出汗后受凉','游泳（既运动又清热）——每周3次','避免高温瑜伽、桑拿等产热运动（火上浇油）'],
+      diet:['绿豆薏苡仁汤（清热解毒，每周3次）','苦瓜、蒲公英茶、冬瓜（清利湿热）','戒酒戒烟，少食辛辣烧烤——这是治本之举'],
+      life:['保持大便通畅（肠道是湿热排出的主要通道，便秘则湿热蓄积）','规律作息，绝对避免熬夜（熬夜直接加重湿热）','皮肤清洁选用温和产品，避免过度清洁破坏皮肤屏障'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'清热去火',icon:'🌊',items:['戒酒、戒辛辣，减少烧烤','绿豆汤，每周3次','保持大便通畅，必要时增加膳食纤维']},
+      {phase:'第31-60天',title:'利湿清肠',icon:'🌿',items:['游泳加入计划，每周2次','蒲公英茶，每日饮用','作息规律，23点前必须入睡']},
+      {phase:'第61-90天',title:'平衡内环境',icon:'⚖️',items:['益生菌加入饮食（调节Th17/Treg平衡）','皮肤状态评估（痤疮减少为改善标志）','重新测评，关注口苦口干改善']},
+    ],
+    actions:{
+      ex:{main:'游泳，每周3次', sub:'清热利湿最佳运动\n微汗即止，勿过度'},
+      diet:{main:'绿豆薏苡仁汤', sub:'每周3次，清热解毒\n戒酒戒辛辣是关键'},
+      life:{main:'23点前入睡', sub:'熬夜直接加重湿热\n保持大便通畅'},
+    },
+  },
+  xueYu:{
+    name:'血瘀质', icon:'🌸', color:'#8B2A2A', light:'#FAEAEA',
+    tagline:'气血运行不畅，需要疏通管道',
+    tcmMech:'气滞血瘀或寒凝血瘀，脉络不通。血行迟滞，瘀血阻络，新血不生，脏腑失于濡养，形体失于荣润，百病由生。',
+    westMech:'血小板高聚集性，纤维蛋白原升高；微循环障碍使免疫细胞归巢效率降低，到达感染灶时间延迟；血管内皮功能受损与IL-6、CRP升高正相关；组织慢性缺氧加速细胞老化。',
+    symptoms:[
+      {q:'皮肤晦暗无光泽，容易出现色斑或瘀青', explain:'血行不畅，肌肤失养，瘀血停滞。对应微循环障碍，组织供氧不足，代谢废物堆积，皮肤色素沉着增加。'},
+      {q:'面唇颜色偏暗紫，或舌头颜色偏紫暗', explain:'血瘀最直接的外在体征。对应末梢循环障碍，氧合血红蛋白减少，还原血红蛋白相对增多。'},
+      {q:'身体容易出现固定位置的刺痛', explain:'瘀血阻络，不通则痛，痛有定处为瘀血特征。对应微循环障碍引起的组织缺氧性疼痛。'},
+    ],
+    tcmRx:{
+      ex:['五禽戏「鸟戏」——展翅动作促进全身气血流通，活络经脉','有氧运动（每日30分钟，微微出汗）——改善微循环','冷热交替浴：温水浴后冷水冲30秒，循环3次，强力促进血液循环'],
+      diet:['山楂陈皮茶（活血化瘀，饭后饮用）','黑木耳炒鸡蛋（活血化瘀，改善微循环）','适量饮用红葡萄酒（白藜芦醇，抗氧化，每次不超过100ml）'],
+      life:['严禁久坐（每小时必须起身活动5分钟，久坐是血瘀的直接原因）','睡前腿部抬高15-20分钟，促进静脉回流','保持情绪舒畅，气郁则加重血瘀（情绪管理是关键）'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'疏通气血',icon:'🌊',items:['每小时起身活动，设置提醒','每日散步30分钟','山楂陈皮茶，每日饭后一杯']},
+      {phase:'第31-60天',title:'活血化瘀',icon:'🌀',items:['冷热交替浴加入晨间程序','五禽戏鸟戏，每天10分钟','睡前腿部抬高15分钟']},
+      {phase:'第61-90天',title:'巩固循环',icon:'💓',items:['有氧运动升级（慢跑代替散步）','皮肤光泽度评估（改善标志）','重新测评，关注色斑和疼痛变化']},
+    ],
+    actions:{
+      ex:{main:'五禽戏·鸟戏', sub:'每天10分钟展翅动作\n改善全身气血流通'},
+      diet:{main:'山楂陈皮茶', sub:'每日饭后一杯\n活血化瘀，消食导滞'},
+      life:{main:'每小时起身活动', sub:'设置手机提醒\n久坐是血瘀主因'},
+    },
+  },
+  qiYu:{
+    name:'气郁质', icon:'🌙', color:'#6B3FA0', light:'#F0EAFC',
+    tagline:'情绪是免疫的开关，需要打开',
+    tcmMech:'肝失疏泄，气机郁结。情志不畅则气机阻滞，郁则化火，或聚津成痰，心神失养，脏腑气血运行受阻，百病由此而生。',
+    westMech:'心理神经免疫学（PNI）核心体质。慢性压力→HPA轴持续激活→皮质醇升高→T细胞增殖受抑、NK细胞活性降低30-50%。长期压力使感冒易感性增加2-3倍（Cohen等，NEJM 1991）。迷走神经张力降低影响全身免疫调控。',
+    symptoms:[
+      {q:'情绪容易低落、郁闷，对事物缺乏兴趣', explain:'肝气郁结，心神失养。对应HPA轴持续激活，皮质醇慢性升高，5-羟色胺（血清素）合成受影响，90%血清素由肠道合成。'},
+      {q:'容易紧张焦虑，对压力敏感，难以放松', explain:'肝气横逆，扰动心神。对应交感神经持续亢奋，副交感/迷走神经张力降低，心率变异性（HRV）下降。'},
+      {q:'胸口有憋闷感，或肋骨两侧有胀痛', explain:'肝经气机郁滞，经络不畅。对应慢性肌肉紧张，膈肌活动受限，呼吸浅表，进一步抑制副交感神经。'},
+    ],
+    tcmRx:{
+      ex:['太极拳（调节自主神经平衡，降低皮质醇）——每次30分钟，重视呼吸','户外有氧运动（阳光+运动双重调节5-羟色胺和多巴胺）','集体运动或团体课程（社交活动本身就是疏郁良药）'],
+      diet:['玫瑰花茉莉花茶（疏肝解郁，每日代茶饮）','佛手陈皮茶（理气解郁，饭后饮用）','少饮酒——酒精短期"放松"，长期加重肝气郁结和焦虑'],
+      life:['腹式呼吸激活迷走神经（每日早晚各10分钟，4-7-8呼吸法）','建立社交联结，每周至少1次有质量的社交活动','情绪日记：每天记录3件好事，科学证实降低皮质醇水平'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'打开气结',icon:'🌬️',items:['每日腹式呼吸10分钟（早晚各一次）','户外散步，感受自然（每天30分钟）','开始写情绪日记']},
+      {phase:'第31-60天',title:'调节神经',icon:'🧘',items:['太极拳入门课，每周3次','玫瑰花茉莉花茶，每日代茶饮','增加1次社交活动/周']},
+      {phase:'第61-90天',title:'建立平衡',icon:'☯️',items:['评估睡眠质量和情绪状态','集体运动或瑜伽课加入计划','重新测评，关注焦虑和胸闷改善']},
+    ],
+    actions:{
+      ex:{main:'腹式深呼吸', sub:'早晚各10分钟\n4-7-8呼吸法激活迷走神经'},
+      diet:{main:'玫瑰茉莉花茶', sub:'每日代茶饮\n疏肝解郁，调节情绪'},
+      life:{main:'户外散步+社交', sub:'每天30分钟户外\n每周1次有质量社交'},
+    },
+  },
+  teBing:{
+    name:'特禀质', icon:'⚡', color:'#1A7A6E', light:'#E4F5F3',
+    tagline:'免疫需要平衡，不是单纯提升',
+    tcmMech:'先天禀赋不足，卫表不固，营卫不和。肺脾肾三脏虚弱，难以抵御外邪；先天之精不足影响免疫耐受的建立，导致过敏反应频发。',
+    westMech:'IgE介导的I型超敏反应过激，Th1/Th2严重偏向Th2；调节性T细胞（Treg）功能不足，免疫耐受建立障碍；肠道早期菌群定植异常（与剖宫产、抗生素使用相关）；遗传因素贡献率30-40%。注意：干预目标是"调节免疫平衡"而非"提升免疫"。',
+    symptoms:[
+      {q:'对花粉、灰尘、某些食物或药物容易过敏', explain:'IgE介导的I型超敏反应。Th2细胞过度活跃，IgE抗体大量产生，与肥大细胞结合后遇过敏原即释放组胺等炎症介质。'},
+      {q:'季节变化或温差大时出现鼻痒、打喷嚏、皮肤瘙痒', explain:'卫气不固，外邪易侵。对应呼吸道黏膜IgE致敏，温差变化诱发肥大细胞脱颗粒，释放组胺和白三烯。'},
+      {q:'有过敏性鼻炎、哮喘、湿疹等过敏性疾病史', explain:'特禀质的典型表现，提示全身性Th1/Th2失衡。Treg细胞功能不足使免疫系统无法对无害抗原建立耐受。'},
+    ],
+    tcmRx:{
+      ex:['规律适度有氧运动调节Th1/Th2平衡（强度适中，避免剧烈）','户外运动，增加自然环境暴露（激活Treg细胞，支持卫生假说）','游泳需注意氯气敏感问题'],
+      diet:['益生菌食品（无糖酸奶、泡菜）——调节肠道菌群，改善Treg功能','玉屏风散思路：黄芪、白术、防风（固表止敏，坚持3个月）','严格记录并避开已知过敏原，建立个人过敏日记'],
+      life:['适度接触自然环境，减少过度洁净（卫生假说：过度清洁反而增加过敏风险）','空气净化器改善室内环境质量','过敏季节提前2-3周开始预防，而非等症状出现后再处理'],
+    },
+    phases:[
+      {phase:'第1-30天',title:'固表止敏',icon:'🛡️',items:['记录过敏日记，找出所有诱发因素','每日食用含益生菌食品（酸奶）','玉屏风散开始服用（需咨询中医）']},
+      {phase:'第31-60天',title:'调节免疫',icon:'⚖️',items:['户外运动加入，每周3次','减少家中尘螨（换洗床品频率增加）','益生菌坚持，评估过敏频率']},
+      {phase:'第61-90天',title:'建立耐受',icon:'🌱',items:['评估过敏发作频率和程度','运动习惯已建立，持续维持','重新测评，关注过敏症状改善']},
+    ],
+    actions:{
+      ex:{main:'户外有氧运动', sub:'每周3次，强度适中\n增加自然暴露，激活Treg'},
+      diet:{main:'益生菌+玉屏风', sub:'每日酸奶+玉屏风散\n调节Th1/Th2平衡'},
+      life:{main:'过敏日记+预防', sub:'记录诱发因素\n提前2-3周开始防护'},
+    },
+  },
+};
+
+const CONST_ORDER=['qiXu','yangXu','yinXu','tanShi','shiRe','xueYu','qiYu','teBing'];
+
+// ── 读取URL参数 ────────────────────────────────────────────────────────────────
+function getParams(){
+  const p=new URLSearchParams(location.search);
+  return{
+    c: p.get('c')||'qiXu',
+    c2: p.get('c2')||'',
+    age: p.get('age')||'',
+    ls: p.get('ls')||'',
+    scores: (p.get('s')||'').split(',').map(Number),
+    syms: (p.get('syms')||'').split(',').map(Number),
+  };
+}
+
+// ── 渲染 ───────────────────────────────────────────────────────────────────────
+function render(){
+  const{c,c2,age,ls,scores,syms}=getParams();
+  const data=DB[c]||DB.qiXu;
+  const primaryScore=scores[CONST_ORDER.indexOf(c)]||65;
+  const date=new Date().toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric'});
+
+  const highSyms=data.symptoms.filter((_,i)=>syms.includes(i));
+  const showSyms=highSyms.length>0?highSyms:data.symptoms.slice(0,2);
+
+  let html=`
+  <!-- ① Hero -->
+  <div class="hero fade-up">
+    <div class="hero-orb1"></div>
+    <div class="hero-orb2"></div>
+    <div class="hero-top">
+      <div class="hero-tag">🌿 中医体质辨识报告</div>
+      <div class="hero-date">${date}</div>
+    </div>
+    <div class="hero-body">
+      <div class="hero-label">您的主体质类型</div>
+      <div class="hero-name">
+        <em>${data.icon}</em>
+        ${data.name}
+      </div>
+      <div class="hero-tagline">${data.tagline}</div>
+      <div class="hero-pills">
+        ${age?`<div class="hero-pill">${age}</div>`:''}
+        ${ls?`<div class="hero-pill">${ls}</div>`:''}
+        <div class="hero-pill hl">偏颇度 ${primaryScore}%</div>
+        ${c2&&DB[c2]?`<div class="hero-pill">兼夹 ${DB[c2].name}</div>`:''}
+      </div>
+    </div>
+    ${primaryScore?`
+    <div class="score-arc">
+      <svg viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="6"/>
+        <circle cx="40" cy="40" r="34" fill="none" stroke="${data.color}" stroke-width="6"
+          stroke-dasharray="${2*Math.PI*34}" stroke-dashoffset="${2*Math.PI*34*(1-primaryScore/100)}"
+          stroke-linecap="round" transform="rotate(-90 40 40)" style="transition:stroke-dashoffset 1.5s ease"/>
+      </svg>
+      <div class="score-arc-text">
+        <div class="score-arc-num">${primaryScore}</div>
+        <div class="score-arc-lbl">偏颇%</div>
+      </div>
+    </div>`:''}
+  </div>
+
+  <!-- ② 症状反显 -->
+  <div class="section fade-up" style="animation-delay:.1s">
+    <div class="card">
+      <div class="card-head">
+        <div class="sec-title"><div class="sec-title-dot" style="background:${data.color}"></div>您的身体在说什么</div>
+      </div>
+      <div class="card-body">
+        <div class="sym-list">
+          ${showSyms.map(s=>`
+          <div class="sym-item">
+            <div class="sym-icon">💬</div>
+            <div class="sym-text">
+              <strong>「${s.q}」</strong><br>
+              ${s.explain}
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 中西医双维度 -->
+  <div class="section fade-up" style="animation-delay:.15s">
+    <div class="card">
+      <div class="card-head">
+        <div class="sec-title"><div class="sec-title-dot" style="background:var(--gold)"></div>中西医双维度解读</div>
+      </div>
+      <div class="card-body">
+        <div class="dual">
+          <div class="dual-card tcm">
+            <div class="dual-label tcm-l">🏛 中医病机</div>
+            <div class="dual-content">${data.tcmMech}</div>
+          </div>
+          <div class="dual-card west">
+            <div class="dual-label west-l">🔬 西医机制</div>
+            <div class="dual-content">${data.westMech}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 90天路线图 -->
+  <div class="section fade-up" style="animation-delay:.2s">
+    <div class="card">
+      <div class="card-head">
+        <div class="sec-title"><div class="sec-title-dot" style="background:var(--primary)"></div>90天改善路线图</div>
+      </div>
+      <div class="card-body">
+        <div class="timeline">
+          ${data.phases.map((ph,i)=>`
+          <div class="tl-item">
+            <div class="tl-dot ${i===0?'active':''}">${ph.icon}</div>
+            <div class="tl-content">
+              <div class="tl-phase">${ph.phase}</div>
+              <div class="tl-title">${ph.title}</div>
+              <div class="tl-items">
+                ${ph.items.map(it=>`<div class="tl-row">${it}</div>`).join('')}
+              </div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ 每日行动卡片 -->
+  <div class="section fade-up" style="animation-delay:.25s">
+    <div class="card">
+      <div class="card-head">
+        <div class="sec-title"><div class="sec-title-dot" style="background:var(--accent)"></div>今天就可以开始的3件事</div>
+      </div>
+      <div class="card-body">
+        <div class="action-grid">
+          <div class="action-card ex">
+            <span class="action-emoji">🏃</span>
+            <div class="action-type">运动处方</div>
+            <div class="action-main">${data.actions.ex.main}</div>
+            <div class="action-sub">${data.actions.ex.sub.replace(/\n/g,'<br>')}</div>
+          </div>
+          <div class="action-card diet">
+            <span class="action-emoji">🥗</span>
+            <div class="action-type">饮食调养</div>
+            <div class="action-main">${data.actions.diet.main}</div>
+            <div class="action-sub">${data.actions.diet.sub.replace(/\n/g,'<br>')}</div>
+          </div>
+          <div class="action-card life">
+            <span class="action-emoji">🌙</span>
+            <div class="action-type">生活起居</div>
+            <div class="action-main">${data.actions.life.main}</div>
+            <div class="action-sub">${data.actions.life.sub.replace(/\n/g,'<br>')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑥ 兼夹体质 -->
+  ${c2&&DB[c2]?`
+  <div class="section fade-up" style="animation-delay:.3s">
+    <div class="card">
+      <div class="card-head">
+        <div class="sec-title"><div class="sec-title-dot" style="background:${DB[c2].color}"></div>兼夹体质提示</div>
+      </div>
+      <div class="card-body">
+        <div class="sec-const">
+          <div class="sec-badge" style="background:${DB[c2].light}">${DB[c2].icon}</div>
+          <div class="sec-info">
+            <div class="sec-info-name" style="color:${DB[c2].color}">${DB[c2].name}</div>
+            <div class="sec-info-desc">${DB[c2].tagline}。在主体质调理基础上，需额外注意：<b>${DB[c2].actions.life.main}</b>，并适当参考${DB[c2].name}的饮食建议。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`:''}
+
+  <!-- ⑦ 八维评分 -->
+  <div class="section fade-up" style="animation-delay:.3s">
+    <div class="card">
+      <div class="card-head">
+        <div class="sec-title"><div class="sec-title-dot" style="background:var(--gold)"></div>八维体质评分</div>
+      </div>
+      <div class="card-body">
+        <div class="score-grid">
+          ${CONST_ORDER.map((id,i)=>{
+            const d=DB[id];
+            const s=scores[i]||0;
+            const col=s>=60?d.color:s>=35?d.color+'99':'#C8D8E4';
+            return`<div class="score-row">
+              <div class="score-top">
+                <div class="score-name">${d.icon} ${d.name}</div>
+                <div class="score-num" style="color:${col}">${s}%</div>
+              </div>
+              <div class="score-track"><div class="score-fill" id="sf${i}" style="background:${col};width:0%"></div></div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑧ 分享 -->
+  <div class="section fade-up" style="animation-delay:.35s">
+    <div class="share-bar">
+      <div class="share-text">
+        <h3>开始你的90天改善计划</h3>
+        <p>保存报告，随时查阅你的个性化方案</p>
+      </div>
+      <div class="share-btns">
+        <button class="btn-share ghost" onclick="window.print()">🖨 打印/保存PDF</button>
+        <button class="btn-share primary" onclick="copyLink()">🔗 复制报告链接</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">⚠️ 本报告基于《中医体质分类与判定》国家标准（GB/T 2009），结合现代免疫学研究生成，仅供健康参考，不构成医学诊断。如有健康问题，请咨询专业医师。</div>
+  `;
+
+  document.getElementById('page').innerHTML=html;
+
+  setTimeout(()=>{
+    document.querySelectorAll('.fade-up').forEach((el,i)=>{
+      setTimeout(()=>el.classList.add('in'), i*80);
+    });
+  },100);
+
+  setTimeout(()=>{
+    CONST_ORDER.forEach((_,i)=>{
+      const el=document.getElementById('sf'+i);
+      if(el) el.style.width=(scores[i]||0)+'%';
+    });
+  },600);
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    const btn=event.target;
+    btn.textContent='✅ 已复制';
+    setTimeout(()=>btn.textContent='🔗 复制报告链接',2000);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
