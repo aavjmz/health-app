@@ -181,6 +181,66 @@ body{background:#fff}
 [dir="rtl"] .tl-row{padding-left:0;padding-right:12px}
 [dir="rtl"] .tl-row::before{left:auto;right:0}
 [dir="rtl"] .tl-item:not(:last-child)::after{left:auto;right:19px}
+
+/* ── Save Banner ── */
+.save-banner{background:linear-gradient(135deg,var(--accent),#C04828);border-radius:var(--r);padding:20px 24px;color:#fff;margin-bottom:16px;position:relative;overflow:hidden;animation:slideDown .4s ease}
+.save-banner.return{background:var(--surface);border:1px solid var(--border);color:var(--text);box-shadow:var(--shadow)}
+.save-banner-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.save-banner-sub{font-size:12px;opacity:.8;line-height:1.7;margin-bottom:14px}
+.save-banner.return .save-banner-sub{color:var(--text2);opacity:1}
+.save-banner-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn-copy-link{padding:10px 22px;border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:none;background:#fff;color:var(--accent);transition:all .2s}
+.save-banner.return .btn-copy-link{background:var(--accent);color:#fff}
+.btn-copy-link:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.save-banner-dismiss{background:none;border:none;color:rgba(255,255,255,.7);font-size:12px;cursor:pointer;font-family:inherit}
+.save-banner.return .save-banner-dismiss{color:var(--text3)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+
+/* ── Check-in Module ── */
+.checkin-card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.checkin-header{padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.checkin-stats{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.checkin-streak{font-size:13px;font-weight:600;color:var(--primary)}
+.checkin-month{font-size:12px;color:var(--text3)}
+.checkin-status{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:1px}
+.checkin-status.perfect{background:#E5F4F1;color:var(--primary)}
+.checkin-status.completed{background:#E5F4F1;color:var(--primary)}
+.checkin-status.incomplete{background:var(--surface2);color:var(--text3)}
+.checkin-body{padding:16px 24px 24px}
+.checkin-items{display:flex;flex-direction:column;gap:10px}
+.checkin-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--rs);border:1.5px solid var(--border);cursor:pointer;transition:all .2s;background:var(--surface2);user-select:none}
+.checkin-item:hover{border-color:var(--primary);background:var(--primary-light)}
+.checkin-item.checked{border-color:var(--primary);background:var(--primary-light)}
+.checkin-item.checked .checkin-check{background:var(--primary);border-color:var(--primary)}
+.checkin-item.checked .checkin-check::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+.checkin-item.checked .checkin-text-main{text-decoration:line-through;opacity:.6}
+.checkin-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;background:var(--surface)}
+.checkin-item.ex.checked{border-color:var(--primary);background:#F0FAF6}.checkin-item.ex.checked .checkin-check{background:var(--primary);border-color:var(--primary)}
+.checkin-item.diet.checked{border-color:var(--accent);background:#FDF6F0}.checkin-item.diet.checked .checkin-check{background:var(--accent);border-color:var(--accent)}
+.checkin-item.life.checked{border-color:#7060B0;background:#F4F0FA}.checkin-item.life.checked .checkin-check{background:#7060B0;border-color:#7060B0}
+.checkin-emoji{font-size:20px;flex-shrink:0}
+.checkin-text{flex:1}
+.checkin-text-main{font-size:13px;font-weight:600;color:var(--text);line-height:1.5;transition:all .2s}
+.checkin-text-sub{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* ── Calendar ── */
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}
+.cal-label{font-size:9px;color:var(--text3);text-align:center;font-weight:600;letter-spacing:1px;padding:4px 0}
+.cal-day{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text2)}
+.cal-day.green{background:#D4EDDA;color:#1E6B3A;font-weight:600}
+.cal-day.light-green{background:#E8F5E9;color:#4A7C59}
+.cal-day.gray{background:var(--surface2);color:var(--text3)}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--primary)}
+.cal-day.future{opacity:.3}
+.checkin-data-notice{font-size:11px;color:var(--text3);margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+
+/* Check-in print */
+@media print{.save-banner,.checkin-card{display:none}}
+
+/* Check-in RTL */
+[dir="rtl"] .checkin-item{flex-direction:row-reverse}
+[dir="rtl"] .checkin-header{flex-direction:row-reverse}
+[dir="rtl"] .checkin-stats{flex-direction:row-reverse}
 </style>
 
 </head>
@@ -380,6 +440,7 @@ function getParams(){
     ls: p.get('ls')||'',
     scores: (p.get('s')||'').split(',').map(Number),
     syms: (p.get('syms')||'').split(',').map(Number),
+    uid: p.get('uid')||'',
   };
 }
 
@@ -395,7 +456,13 @@ function getLocalizedField(obj, field) {
 }
 
 function renderPage(){
-  const{c,c2,age,ls,scores,syms}=getParams();
+  const params=getParams();
+  const{c,c2,age,ls,scores,syms}=params;
+  // Resolve uid: URL param → localStorage → generate new
+  let uid=params.uid;
+  if(uid){localStorage.setItem('user_uid',uid);}else{uid=getOrCreateUid();}
+  if(!params.uid){const u=new URL(location.href);u.searchParams.set('uid',uid);history.replaceState(null,'',u.toString());}
+  const isReturn=!!localStorage.getItem('report_visited_'+uid);
   const CONSTS=getConsts();
   const lang=getLang();
   const data=REPORT_DB[c]||REPORT_DB.qiXu;
@@ -452,6 +519,16 @@ function renderPage(){
         <div class="score-arc-lbl">${t('deviationLbl')}</div>
       </div>
     </div>`:''}
+  </div>
+
+  <!-- ①b Save Banner -->
+  <div class="save-banner${isReturn?' return':''} fade-up" id="saveBanner" style="animation-delay:.05s">
+    <div class="save-banner-title">${t('saveBannerTitle')}</div>
+    <div class="save-banner-sub">${t('saveBannerSub')}</div>
+    <div class="save-banner-actions">
+      <button class="btn-copy-link" id="copyLinkBtn" onclick="copySaveLink()">${t('copyLinkBtn')}</button>
+      ${isReturn?'<button class="save-banner-dismiss" onclick="dismissBanner()">'+t('dismissBtn')+'</button>':''}
+    </div>
   </div>
 
   <!-- ② Symptoms -->
@@ -551,6 +628,9 @@ function renderPage(){
     </div>
   </div>
 
+  <!-- ⑤b Check-in -->
+  ${renderCheckinSection(uid,actions)}
+
   <!-- ⑥ Secondary constitution -->
   ${c2&&REPORT_DB[c2]?`
   <div class="section fade-up" style="animation-delay:.3s">
@@ -613,6 +693,8 @@ function renderPage(){
   `;
 
   document.getElementById('page').innerHTML=html;
+  // Mark visited for banner state
+  localStorage.setItem('report_visited_'+uid,'1');
 
   // inject lang switcher
   let sw=document.getElementById('langSwitcher');
@@ -631,6 +713,14 @@ function renderPage(){
       if(el) el.style.width=(scores[i]||0)+'%';
     });
   },600);
+
+  // Scroll to check-in section on return visit
+  if(isReturn){
+    setTimeout(()=>{
+      const el=document.getElementById('checkinSection');
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    },500);
+  }
 }
 
 function copyLink(){
@@ -640,7 +730,220 @@ function copyLink(){
   });
 }
 
+// ── Save Banner helpers ──
+function copySaveLink(){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    const btn=document.getElementById('copyLinkBtn');
+    if(btn){btn.textContent=t('copied');setTimeout(()=>btn.textContent=t('copyLinkBtn'),2000);}
+  });
+}
+function dismissBanner(){
+  const el=document.getElementById('saveBanner');
+  if(el) el.style.display='none';
+}
+
+// ── Check-in helpers ──
+function fmtDate(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function todayKey(uid){return 'checkin_'+uid+'_'+fmtDate(new Date());}
+function getCheckin(uid){
+  const raw=localStorage.getItem(todayKey(uid));
+  if(raw){try{return JSON.parse(raw);}catch(e){}}
+  return{ex:false,diet:false,life:false};
+}
+function saveCheckin(uid,data){localStorage.setItem(todayKey(uid),JSON.stringify(data));}
+function getCheckinCount(data){return[data.ex,data.diet,data.life].filter(Boolean).length;}
+function getCheckinStatus(data){
+  const n=getCheckinCount(data);
+  return n>=3?'perfect':n>=2?'completed':'incomplete';
+}
+function getCheckinForDate(uid,dateStr){
+  const raw=localStorage.getItem('checkin_'+uid+'_'+dateStr);
+  if(raw){try{return JSON.parse(raw);}catch(e){}}
+  return null;
+}
+
+function calcStreak(uid){
+  let streak=0;
+  const today=getCheckin(uid);
+  const d=new Date();
+  if(getCheckinCount(today)>=2){
+    streak=1;
+  }else{
+    // today not done, check from yesterday
+    d.setDate(d.getDate()-1);
+    const data=getCheckinForDate(uid,fmtDate(d));
+    if(!data||getCheckinCount(data)<2) return 0;
+    streak=1;
+  }
+  const check=new Date(d);
+  while(true){
+    check.setDate(check.getDate()-1);
+    const data=getCheckinForDate(uid,fmtDate(check));
+    if(!data||getCheckinCount(data)<2) break;
+    streak++;
+  }
+  return streak;
+}
+
+function calcMonthDays(uid){
+  const now=new Date();
+  let count=0;
+  for(let day=1;day<=now.getDate();day++){
+    const ds=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+    const data=getCheckinForDate(uid,ds);
+    if(data&&getCheckinCount(data)>=2) count++;
+  }
+  return count;
+}
+
+function getCalendarData(uid){
+  const days=[];
+  const now=new Date();
+  for(let i=29;i>=0;i--){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    const dateStr=fmtDate(d);
+    const data=getCheckinForDate(uid,dateStr);
+    const count=data?getCheckinCount(data):0;
+    days.push({date:d,dateStr,count,isToday:i===0});
+  }
+  return days;
+}
+
+function calcItemRates(uid){
+  const now=new Date();
+  let total=0,exC=0,dietC=0,lifeC=0;
+  for(let i=0;i<30;i++){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    const data=getCheckinForDate(uid,fmtDate(d));
+    if(data){total++;if(data.ex)exC++;if(data.diet)dietC++;if(data.life)lifeC++;}
+  }
+  if(!total) return{total:0,ex:0,diet:0,life:0};
+  return{total,ex:Math.round(exC/total*100),diet:Math.round(dietC/total*100),life:Math.round(lifeC/total*100)};
+}
+
+// Keep uid in module scope for toggle handler
+let _currentUid='';
+
+function toggleCheckin(uid,cat){
+  const data=getCheckin(uid);
+  data[cat]=!data[cat];
+  saveCheckin(uid,data);
+  updateCheckinUI(uid);
+}
+
+function updateCheckinUI(uid){
+  const data=getCheckin(uid);
+  const status=getCheckinStatus(data);
+  // Update checkboxes
+  document.querySelectorAll('.checkin-item').forEach(el=>{
+    const key=el.classList.contains('ex')?'ex':el.classList.contains('diet')?'diet':'life';
+    el.classList.toggle('checked',data[key]);
+  });
+  // Update status badge
+  const badge=document.querySelector('.checkin-status');
+  if(badge){
+    badge.className='checkin-status '+status;
+    badge.textContent=status==='perfect'?t('checkinPerfect'):status==='completed'?t('checkinCompleted'):t('checkinIncomplete');
+  }
+  // Update streak & month
+  const streak=calcStreak(uid);
+  const monthDays=calcMonthDays(uid);
+  const statsEl=document.querySelector('.checkin-stats');
+  if(statsEl){
+    statsEl.innerHTML=
+      (streak>0?'<div class="checkin-streak">🔥 '+t('streakLabel').replace('{n}',streak)+'</div>':'')+
+      '<div class="checkin-month">📅 '+t('monthLabel').replace('{n}',monthDays)+'</div>';
+  }
+  // Update today's calendar cell
+  document.querySelectorAll('.cal-day.today').forEach(el=>{
+    const cnt=getCheckinCount(data);
+    el.classList.remove('green','light-green','gray');
+    el.classList.add(cnt>=2?'green':cnt>=1?'light-green':'gray');
+  });
+}
+
+function renderCheckinSection(uid,actions){
+  _currentUid=uid;
+  const data=getCheckin(uid);
+  const streak=calcStreak(uid);
+  const monthDays=calcMonthDays(uid);
+  const status=getCheckinStatus(data);
+  const calData=getCalendarData(uid);
+  const rates=calcItemRates(uid);
+
+  const items=[
+    {key:'ex',emoji:'🏃',cls:'ex',main:actions.ex.main,sub:(actions.ex.sub||'').split(/\n/)[0]},
+    {key:'diet',emoji:'🥗',cls:'diet',main:actions.diet.main,sub:(actions.diet.sub||'').split(/\n/)[0]},
+    {key:'life',emoji:'🌙',cls:'life',main:actions.life.main,sub:(actions.life.sub||'').split(/\n/)[0]},
+  ];
+
+  const statusLabel=status==='perfect'?t('checkinPerfect'):status==='completed'?t('checkinCompleted'):t('checkinIncomplete');
+
+  // Calendar
+  const weekdays=t('calWeekdays').split(',');
+  let calHtml=weekdays.map(w=>'<div class="cal-label">'+w+'</div>').join('');
+  const firstDow=calData[0].date.getDay();
+  for(let i=0;i<firstDow;i++) calHtml+='<div class="cal-day"></div>';
+  calData.forEach(d=>{
+    const cls=d.isToday?' today':'';
+    const colorCls=d.count>=2?' green':d.count>=1?' light-green':' gray';
+    calHtml+='<div class="cal-day'+colorCls+cls+'">'+d.date.getDate()+'</div>';
+  });
+
+  // Rates (P2)
+  let rateHtml='';
+  if(rates.total>0){
+    const cats=['ex','diet','life'];
+    const lowest=cats.reduce((a,b)=>rates[a]<rates[b]?a:b);
+    const typeKey=lowest==='ex'?'exType':lowest==='diet'?'dietType':'lifeType';
+    rateHtml='<div style="font-size:11px;color:var(--text3);margin-top:12px">'+t('lowestRate')+': <b style="color:var(--text)">'+t(typeKey)+'</b> ('+rates[lowest]+'%)</div>';
+  }
+
+  return '<div class="section fade-up" style="animation-delay:.28s" id="checkinSection">'+
+    '<div class="checkin-card">'+
+      '<div class="checkin-header">'+
+        '<div class="sec-title"><div class="sec-title-dot" style="background:var(--primary)"></div>'+t('checkinTitle')+'</div>'+
+        '<div class="checkin-status '+status+'">'+statusLabel+'</div>'+
+      '</div>'+
+      '<div class="checkin-body">'+
+        '<div class="checkin-stats">'+
+          (streak>0?'<div class="checkin-streak">🔥 '+t('streakLabel').replace('{n}',streak)+'</div>':'')+
+          '<div class="checkin-month">📅 '+t('monthLabel').replace('{n}',monthDays)+'</div>'+
+        '</div>'+
+        '<div class="checkin-items" style="margin-top:14px">'+
+          items.map(it=>
+            '<div class="checkin-item '+it.cls+(data[it.key]?' checked':'')+'" onclick="toggleCheckin(\''+uid+'\',\''+it.key+'\')">'+
+              '<div class="checkin-check"></div>'+
+              '<div class="checkin-emoji">'+it.emoji+'</div>'+
+              '<div class="checkin-text">'+
+                '<div class="checkin-text-main">'+it.main+'</div>'+
+                '<div class="checkin-text-sub">'+it.sub+'</div>'+
+              '</div>'+
+            '</div>'
+          ).join('')+
+        '</div>'+
+        '<div style="height:1px;background:var(--border);margin:20px 0 16px"></div>'+
+        '<div style="font-size:12px;font-weight:600;color:var(--text2);letter-spacing:1px;margin-bottom:10px">'+t('calendarTitle')+'</div>'+
+        '<div class="calendar-grid">'+calHtml+'</div>'+
+        rateHtml+
+        '<div class="checkin-data-notice">'+t('dataNotice')+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
 renderPage();
+
+// Midnight rollover: re-render if date changed while page was in background
+let _lastDate=new Date().toDateString();
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&new Date().toDateString()!==_lastDate){
+    _lastDate=new Date().toDateString();
+    renderPage();
+  }
+});
 </script>
 
 </body>
