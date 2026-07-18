@@ -57,6 +57,13 @@ const UI = {
     printBtn: '🖨 打印/保存PDF', copyBtn: '🔗 复制报告链接', copied: '✅ 已复制',
     notice: '⚠️ 本报告基于《中医体质分类与判定》国家标准（GB/T 2009），结合现代免疫学研究生成，仅供健康参考，不构成医学诊断。如有健康问题，请咨询专业医师。',
     deviationLbl: '偏颇%', langBtn: '🌐 语言', stepOf: '/',
+    saveBannerTitle:'收藏这个链接，随时查看你的报告',
+    saveBannerSub:'你的个性化报告不会消失——复制链接或添加书签，下次直接打开继续打卡',
+    copyLinkBtn:'📋 复制专属链接',dismissBtn:'收起',
+    checkinTitle:'每日打卡',checkinPerfect:'🌟 完美打卡',checkinCompleted:'✅ 今日达标',checkinIncomplete:'进行中...',
+    streakLabel:'已坚持 {n} 天',monthLabel:'本月完成 {n} 天',
+    calendarTitle:'30天打卡记录',calWeekdays:'日,一,二,三,四,五,六',lowestRate:'最需坚持',
+    dataNotice:'💡 数据存储在本机浏览器中，清除缓存会丢失记录',
   },
   'zh-TW': {
     title: '中醫體質辨識 · 免疫力自測', chip: '免疫力自測系統',
@@ -81,6 +88,13 @@ const UI = {
     printBtn: '🖨 列印/儲存PDF', copyBtn: '🔗 複製報告連結', copied: '✅ 已複製',
     notice: '⚠️ 本報告基於《中醫體質分類與判定》國家標準（GB/T 2009），結合現代免疫學研究生成，僅供健康參考，不構成醫學診斷。如有健康問題，請諮詢專業醫師。',
     deviationLbl: '偏頗%', langBtn: '🌐 語言', stepOf: '/',
+    saveBannerTitle:'收藏這個連結，隨時查看你的報告',
+    saveBannerSub:'你的個性化報告不會消失——複製連結或加入書籤，下次直接開啟繼續打卡',
+    copyLinkBtn:'📋 複製專屬連結',dismissBtn:'收起',
+    checkinTitle:'每日打卡',checkinPerfect:'🌟 完美打卡',checkinCompleted:'✅ 今日達標',checkinIncomplete:'進行中...',
+    streakLabel:'已堅持 {n} 天',monthLabel:'本月完成 {n} 天',
+    calendarTitle:'30天打卡記錄',calWeekdays:'日,一,二,三,四,五,六',lowestRate:'最需堅持',
+    dataNotice:'💡 資料儲存在本機瀏覽器中，清除快取會遺失記錄',
   },
   'en': {
     title: 'TCM Constitution · Immunity Self-Assessment', chip: 'IMMUNITY SELF-ASSESSMENT',
@@ -105,6 +119,13 @@ const UI = {
     printBtn: '🖨 Print / Save PDF', copyBtn: '🔗 Copy Report Link', copied: '✅ Copied!',
     notice: '⚠️ This report is generated based on the Chinese National Standard for TCM Constitution Classification (GB/T 2009), combined with modern immunology research. For health reference only — not a medical diagnosis. Please consult a qualified physician for health concerns.',
     deviationLbl: 'Score', langBtn: '🌐 Language', stepOf: '/',
+    saveBannerTitle:'Save this link to access your report anytime',
+    saveBannerSub:'Your personalized report is always here — copy the link or bookmark this page to continue your daily check-ins',
+    copyLinkBtn:'📋 Copy My Link',dismissBtn:'Dismiss',
+    checkinTitle:'Daily Check-in',checkinPerfect:'🌟 Perfect Day',checkinCompleted:'✅ Completed',checkinIncomplete:'In Progress...',
+    streakLabel:'{n}-day streak',monthLabel:'{n} days this month',
+    calendarTitle:'30-Day Check-in History',calWeekdays:'Su,Mo,Tu,We,Th,Fr,Sa',lowestRate:'Needs focus',
+    dataNotice:'💡 Data is stored in your browser — clearing cache will erase records',
   },
   'ja': {
     title: '中医体質判定 · 免疫力セルフチェック', chip: '免疫力セルフチェック',
@@ -415,6 +436,17 @@ function getDet() {
 function getConstName(id) {
   const c = getConsts().find(x => x.id === id);
   return c ? c.name : id;
+}
+
+// ── UID ─────────────────────────────────────────────────────────────────────
+function getOrCreateUid(){
+  let uid=localStorage.getItem('user_uid');
+  if(uid&&uid.length===14) return uid;
+  const ts=Date.now().toString(36).slice(-8).padStart(8,'0');
+  const rnd=Math.random().toString(36).slice(2,8).padStart(6,'0');
+  uid=ts+rnd;
+  localStorage.setItem('user_uid',uid);
+  return uid;
 }
 
 // ── Language Switcher UI ──────────────────────────────────────────────────────

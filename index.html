@@ -2,8 +2,11 @@
 
 <html lang="zh-CN">
 <head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4136658490563590"
+     crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-4136658490563590">
 <title>TCM Constitution · Immunity Self-Assessment</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -136,8 +139,6 @@ body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;heig
 [dir="rtl"] .btn-back::before{content:'→'!important}
 [dir="rtl"] .nav{flex-direction:row-reverse}
 </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4136658490563590"
-     crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="app">
@@ -277,7 +278,7 @@ function goN(){
     const symIdxs=c?c.qs.map((_,i)=>answers[`${c.id}_${i}`]>=2?i:-1).filter(x=>x>=0):[];
     const params=new URLSearchParams({
       c:primary[0],c2,age:basic.age||'',ls:basic.lifestyle||'',
-      s:scoreStr,syms:symIdxs.join(','),lang:getLang()
+      s:scoreStr,syms:symIdxs.join(','),lang:getLang(),uid:getOrCreateUid()
     });
     window.location.href='report.html?'+params.toString();
     return;
