@@ -13,4 +13,4 @@
 
 ## 部署
 
-连接 GitHub 仓库到 Vercel，自动部署。
+将 `index.html`、`report.html` 复制到服务器 `/root/xray-deploy/nginx/html/` 即可生效。
