@@ -252,6 +252,7 @@ body{background:#fff}
 </div>
 
 <script src="i18n.js"></script>
+<script src="report-i18n.js"></script>
 <script>
 // Read URL lang param first, override stored lang if provided
 (function(){
@@ -264,174 +265,6 @@ body{background:#fff}
     document.documentElement.dir=urlLang==='ar'?'rtl':'ltr';
   }
 })();
-
-// ── DB for report (uses CONSTS_DATA for names, extended data below) ───────────
-const REPORT_DB = {
-  qiXu:{
-    tagline:{
-      'zh-CN':'气不够用，身体在透支',
-      'zh-TW':'氣不夠用，身體在透支',
-      'en':'Not enough Qi — your body is overdrawn',
-    },
-    tcmMech:{
-      'zh-CN':'肺卫不固，脾失运化，元气亏虚。气虚则无力推动血液运行，脏腑失养，卫外功能下降，外邪趁虚而入。',
-      'en':'Lung defense is unstable; Spleen fails to transform; Yuan Qi is depleted. Deficient Qi cannot propel blood circulation, organs lose nourishment, protective function declines, and pathogens invade.',
-    },
-    westMech:{
-      'zh-CN':'NK细胞活性下降，CD4⁺/CD8⁺比值偏低；呼吸道sIgA分泌减少30-40%；线粒体ATP合成效率不足，慢性低能量状态。',
-      'en':'NK cell activity decreases, CD4⁺/CD8⁺ ratio is low; respiratory sIgA secretion reduced 30–40%; mitochondrial ATP synthesis efficiency insufficient, chronic low-energy state.',
-    },
-    symptoms:{
-      'zh-CN':[
-        {q:'稍微活动就感到疲倦、气短，懒得说话',explain:'气不够用了。中医称"气虚不运"，西医对应线粒体产能效率低，细胞ATP供应不足。'},
-        {q:'容易感冒，且感冒后恢复较慢（超过1周）',explain:'卫气不固，外邪易侵。对应呼吸道sIgA分泌量下降，黏膜第一道防线薄弱。'},
-        {q:'不运动也容易出汗，或稍动即大汗',explain:'气虚不能固摄津液，汗液外泄。同时提示自主神经张力偏低，体温调节效率不佳。'},
-      ],
-      'en':[
-        {q:'Feel fatigued and breathless after mild activity; reluctant to talk',explain:'Not enough Qi. TCM calls this "Qi deficiency failing to move" — Western medicine corresponds to low mitochondrial energy production and insufficient cellular ATP supply.'},
-        {q:'Catch colds easily; recovery takes more than 1 week',explain:'Defensive Qi is unstable, pathogens invade easily. Corresponds to decreased respiratory sIgA secretion, weakening the first line of mucosal defense.'},
-        {q:'Sweat without exercise, or sweat heavily with minimal movement',explain:'Qi deficiency cannot consolidate fluids, causing sweat to leak out. Also indicates low autonomic nervous tone and poor thermoregulation efficiency.'},
-      ],
-    },
-    phases:{
-      'zh-CN':[
-        {phase:'第1-30天',title:'建立基础',icon:'🌱',items:['每天做八段锦前两式，10分钟即可','睡眠时间固定，23点前入睡','每天喝1杯黄芪红枣水']},
-        {phase:'第31-60天',title:'强化气机',icon:'🌿',items:['八段锦完整一套（约20分钟）','加入散步，每次30分钟，每周5次','饮食调整：减少生冷，增加山药']},
-        {phase:'第61-90天',title:'巩固评估',icon:'🌳',items:['保持上述习惯，评估感冒频率变化','尝试站桩基础功（补气效果更强）','重新做一次体质测评，对比变化']},
-      ],
-      'en':[
-        {phase:'Days 1–30',title:'Build Foundation',icon:'🌱',items:['First 2 Baduanjin exercises daily, 10 min','Fixed sleep schedule, before 11pm','One cup of astragalus-date tea daily']},
-        {phase:'Days 31–60',title:'Strengthen Qi Flow',icon:'🌿',items:['Full Baduanjin set (~20 min)','Add walking: 30 min, 5×/week','Reduce cold/raw foods; add yam to diet']},
-        {phase:'Days 61–90',title:'Consolidate & Assess',icon:'🌳',items:['Maintain habits; track cold frequency','Try basic standing meditation (stronger Qi tonification)','Retake the constitution assessment to compare']},
-      ],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'八段锦前两式',sub:'每天早晨10分钟\n动作：双手托天 + 单举脾胃'},diet:{main:'黄芪红枣水',sub:'黄芪15g + 红枣5枚\n早晨泡水，代茶饮全天'},life:{main:'23点前入睡',sub:'固定作息最补气\n午休15分钟加持'}},
-      'en':{ex:{main:'Baduanjin first 2 forms',sub:'10 min each morning\nMoves: Hold Sky + Spleen-Stomach Lift'},diet:{main:'Astragalus-Date Tea',sub:'Astragalus 15g + 5 red dates\nSteep in morning, sip all day'},life:{main:'Sleep before 11pm',sub:'Fixed schedule best for Qi\n15-min afternoon nap helps'}},
-    },
-  },
-  yangXu:{
-    tagline:{'zh-CN':'身体的"暖气"不够用了','en':'Your body\'s "heating system" is running low'},
-    tcmMech:{'zh-CN':'命门火衰，脾肾阳虚，温煦推动无力。阳气不足，则气化不利，卫阳不充于表，寒邪易侵，脏腑功能减退。','en':'Vital-gate fire declines, Spleen and Kidney Yang deficiency, insufficient warmth and propulsion. Yang Qi deficiency leads to impaired transformation, inadequate defensive Yang at the surface, susceptibility to cold, and reduced organ function.'},
-    westMech:{'zh-CN':'基础代谢率偏低，产热不足；甲状腺功能偏低倾向（T3/T4偏低区间）；体温降低直接抑制免疫细胞活性——体温每降1°C，免疫细胞活性下降约37%。','en':'Low basal metabolic rate, insufficient heat production; thyroid function tendency toward low (T3/T4 low range); lower body temperature directly suppresses immune cell activity — every 1°C drop reduces immune cell activity by ~37%.'},
-    symptoms:{
-      'zh-CN':[{q:'手脚发凉，即使夏天也比别人冷',explain:'阳气不能温煦四末。对应外周血管收缩，末梢循环不足，产热效率低下。'},{q:'精神不振，早晨难以起床，情绪偏低落',explain:'肾阳不振，心神失温。对应皮质醇晨峰低下，HPA轴反应性减弱，5-羟色胺合成不足。'},{q:'大便偏稀或不成形，容易腹泻',explain:'脾阳虚则运化失司，水湿不化。对应肠道蠕动减慢，肠道菌群多样性下降。'}],
-      'en':[{q:'Cold hands and feet, even in summer',explain:'Yang Qi cannot warm the extremities. Corresponds to peripheral vasoconstriction, insufficient peripheral circulation, and low heat production efficiency.'},{q:'Low energy, difficulty getting up in the morning, low mood',explain:'Kidney Yang is not vigorous, heart-spirit loses warmth. Corresponds to low morning cortisol peak, weakened HPA axis reactivity, insufficient serotonin synthesis.'},{q:'Loose or unformed stools; prone to diarrhea',explain:'Spleen Yang deficiency causes impaired transformation, fluids are not converted. Corresponds to slowed intestinal motility and reduced gut microbiome diversity.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'点燃阳气',icon:'🕯️',items:['每晚热水泡脚，20分钟','早晨喝一杯生姜红糖水','开始五禽戏熊戏练习，每天10分钟']},{phase:'第31-60天',title:'温煦全身',icon:'☀️',items:['加入艾灸，关元和足三里各10分钟','饮食调整：羊肉汤每周1次','太极拳入门，每次20分钟']},{phase:'第61-90天',title:'巩固阳气',icon:'🌄',items:['艾灸坚持，加入命门穴','早晨户外散步，接受阳光（补充维生素D）','重新测评，评估怕冷症状改善']}],
-      'en':[{phase:'Days 1–30',title:'Ignite Yang Qi',icon:'🕯️',items:['Hot foot bath every night, 20 min','One cup of ginger-brown sugar water each morning','Start Five-Animal Bear Play practice, 10 min/day']},{phase:'Days 31–60',title:'Warm the Whole Body',icon:'☀️',items:['Add moxibustion: Guanyuan and Zusanli, 10 min each','Diet: lamb soup once per week','Intro Tai Chi, 20 min per session']},{phase:'Days 61–90',title:'Consolidate Yang Qi',icon:'🌄',items:['Continue moxibustion, add Mingmen point','Morning outdoor walk for sunlight (vitamin D)','Retake assessment, evaluate cold sensitivity improvement']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'五禽戏·熊戏',sub:'每天早晨10分钟\n重心沉蹲，激活肾阳'},diet:{main:'生姜红糖水',sub:'每早空腹一杯\n温中散寒，暖胃护阳'},life:{main:'艾灸+泡脚',sub:'每周艾灸2次\n每晚泡脚20分钟'}},
-      'en':{ex:{main:'Bear Play Qigong',sub:'10 min each morning\nLow squat stance activates Kidney Yang'},diet:{main:'Ginger-Brown Sugar Tea',sub:'One cup on empty stomach each morning\nWarms center, dispels cold'},life:{main:'Moxibustion + Foot Bath',sub:'Moxibustion 2×/week\nHot foot bath 20 min every night'}},
-    },
-  },
-  yinXu:{
-    tagline:{'zh-CN':'内火偏旺，阴液在亏耗','en':'Internal fire flaring — Yin fluids are being depleted'},
-    tcmMech:{'zh-CN':'肾阴亏虚，水不制火，虚热内生。阴液不足则濡润失职，虚火上炎灼伤津液，形成恶性循环。','en':'Kidney Yin is deficient; water cannot control fire; deficiency-heat arises internally. Insufficient Yin fluids fail to nourish, deficiency-fire flares and burns fluids, creating a vicious cycle.'},
-    westMech:{'zh-CN':'氧化应激水平升高（活性氧ROS增多）；端粒酶活性降低，细胞老化加速；Th1/Th2失衡偏向Th2；夜间皮质醇偏高抑制T细胞增殖和NK细胞活性。','en':'Elevated oxidative stress (increased reactive oxygen species ROS); reduced telomerase activity, accelerated cellular aging; Th1/Th2 imbalance shifted toward Th2; elevated nighttime cortisol suppresses T-cell proliferation and NK cell activity.'},
-    symptoms:{
-      'zh-CN':[{q:'手足心发热，午后面部有发热感',explain:'阴虚生内热，虚热浮越于外。对应基础代谢率偏高，夜间皮质醇水平偏高，产热增加。'},{q:'夜间睡眠差，入睡困难或容易惊醒、盗汗',explain:'虚火扰心，心神不宁。对应皮质醇昼夜节律紊乱，夜间交感神经兴奋性偏高，褪黑素分泌受抑。'},{q:'口干咽燥，喜喝冷饮，眼睛干涩',explain:'阴液不足，津液不能上承。对应黏膜分泌功能减弱，泪液和唾液分泌减少。'}],
-      'en':[{q:'Warm palms and soles; flushing sensation in the afternoon',explain:'Yin deficiency generates internal heat, deficiency-heat floats outward. Corresponds to elevated basal metabolic rate, high nighttime cortisol levels, and increased heat generation.'},{q:'Poor sleep; difficulty falling asleep, easily awakened, night sweats',explain:'Deficiency-fire disturbs the heart, heart-spirit is unsettled. Corresponds to disrupted cortisol circadian rhythm, elevated nighttime sympathetic nervous tone, suppressed melatonin secretion.'},{q:'Dry mouth and throat; prefer cold drinks; dry eyes',explain:'Insufficient Yin fluids fail to ascend and moisten. Corresponds to reduced mucosal secretory function, decreased tear and saliva production.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'静心养阴',icon:'🌙',items:['23点前入睡，雷打不动','枸杞麦冬水，每日代茶饮','六字诀「呬」字功，每日5分钟']},{phase:'第31-60天',title:'滋阴清热',icon:'💧',items:['太极拳入门，每周3次','百合银耳羹，每周2次','减少辛辣食物摄入']},{phase:'第61-90天',title:'巩固阴液',icon:'✨',items:['游泳加入计划，每周1次','坚持睡眠节律，评估睡眠质量','重新测评，关注手足心热改善']}],
-      'en':[{phase:'Days 1–30',title:'Calm Mind, Nourish Yin',icon:'🌙',items:['Sleep before 11pm, no exceptions','Goji-ophiopogon water as daily tea','Six-Healing Sounds "Sss", 5 min/day']},{phase:'Days 31–60',title:'Nourish Yin, Clear Heat',icon:'💧',items:['Intro Tai Chi, 3×/week','Lily and white fungus soup, 2×/week','Reduce spicy food intake']},{phase:'Days 61–90',title:'Consolidate Yin Fluids',icon:'✨',items:['Add swimming once per week','Maintain sleep rhythm; assess sleep quality','Retake assessment, note improvement in palm/sole heat']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'太极拳·慢练',sub:'每次30分钟，每周3次\n慢速舒展，以柔养阴'},diet:{main:'枸杞麦冬茶',sub:'枸杞10粒+麦冬5g\n代茶饮，滋阴生津'},life:{main:'23点前入睡',sub:'保护褪黑素峰值\n午休15分钟养阴'}},
-      'en':{ex:{main:'Slow Tai Chi Practice',sub:'30 min, 3×/week\nSlow, gentle movement nourishes Yin'},diet:{main:'Goji-Ophiopogon Tea',sub:'10 goji berries + ophiopogon 5g\nSip as daily tea, nourishes Yin'},life:{main:'Sleep before 11pm',sub:'Protect melatonin peak\n15-min afternoon nap nourishes Yin'}},
-    },
-  },
-  tanShi:{
-    tagline:{'zh-CN':'身体"湿气"太重，需要排水清道','en':'Too much dampness — your body needs draining and clearing'},
-    tcmMech:{'zh-CN':'脾失健运，水湿内停，聚湿生痰。痰湿流注脏腑经络，阻滞气机，影响气血运行。','en':'Spleen fails to transform and transport; fluids stagnate internally, accumulating into phlegm-dampness. Phlegm-dampness flows into organs and channels, obstructing Qi mechanism and affecting Qi-blood circulation.'},
-    westMech:{'zh-CN':'内脏脂肪积累→脂肪因子失调；TNF-α、IL-6、CRP慢性升高（是平和质2.3倍）；肠漏导致LPS入血，形成持续性低度内毒素血症。','en':'Visceral fat accumulation → adipokine dysregulation; TNF-α, IL-6, CRP chronically elevated (2.3× vs balanced constitution); leaky gut leads to LPS in blood, forming persistent low-grade endotoxemia.'},
-    symptoms:{
-      'zh-CN':[{q:'身体感觉沉重，头脑不清醒，像裹了层东西',explain:'痰湿蒙蔽清窍，阻滞气机。对应慢性低度炎症，细胞因子（IL-6）影响神经系统，产生"脑雾"现象。'},{q:'体型偏胖，腹部肥满松软',explain:'脾虚运化失司，水湿停聚。对应内脏脂肪积累，脂肪因子分泌失调，代谢综合征风险增加。'},{q:'口中发黏有异味，或早起痰多',explain:'痰湿上泛，浊气上逆。对应口腔和消化道菌群失衡，产气菌过度增殖。'}],
-      'en':[{q:'Body feels heavy and sluggish; foggy mind, as if wrapped in something',explain:'Phlegm-dampness veils the clear orifices and obstructs Qi. Corresponds to chronic low-grade inflammation, cytokines (IL-6) affecting the nervous system, causing "brain fog".'},{q:'Overweight, especially with soft, flabby abdomen',explain:'Spleen deficiency impairs transformation; fluids stagnate and accumulate. Corresponds to visceral fat accumulation, adipokine dysregulation, increased metabolic syndrome risk.'},{q:'Sticky or bad taste in mouth; excessive phlegm in the morning',explain:'Phlegm-dampness rises, turbid Qi ascends. Corresponds to oral and digestive tract microbiome imbalance, overgrowth of gas-producing bacteria.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'启动代谢',icon:'🚶',items:['每餐后散步20分钟','薏苡仁赤小豆粥，每周3次早餐','减少精制碳水摄入50%']},{phase:'第31-60天',title:'强化运动',icon:'🏊',items:['有氧运动升级：快走45分钟，每周5次','陈皮茯苓茶，每日饮用','八段锦完整套路加入晨练']},{phase:'第61-90天',title:'巩固习惯',icon:'💪',items:['游泳加入计划（最佳祛湿运动）','饮食习惯已建立，继续维持','重新测评，关注体重和头脑清醒度']}],
-      'en':[{phase:'Days 1–30',title:'Kickstart Metabolism',icon:'🚶',items:['Walk 20 min after each meal','Barley-adzuki porridge for breakfast, 3×/week','Reduce refined carb intake by 50%']},{phase:'Days 31–60',title:'Intensify Exercise',icon:'🏊',items:['Upgrade aerobics: brisk walk 45 min, 5×/week','Tangerine peel-poria tea daily','Add full Baduanjin set to morning routine']},{phase:'Days 61–90',title:'Consolidate Habits',icon:'💪',items:['Add swimming (best exercise for removing dampness)','Dietary habits established — maintain them','Retake assessment; note weight and mental clarity']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'有氧运动45分钟',sub:'快走/游泳/骑行\n每周5次，坚持是关键'},diet:{main:'薏苡仁赤小豆粥',sub:'早餐首选，每周3次\n健脾祛湿效果显著'},life:{main:'饭后散步30分钟',sub:'助运化，切勿饭后卧\n每小时起身活动'}},
-      'en':{ex:{main:'45-min Aerobic Exercise',sub:'Brisk walk/swim/cycling\n5×/week — consistency is key'},diet:{main:'Barley-Adzuki Porridge',sub:'Best breakfast choice, 3×/week\nStrengthens Spleen, removes dampness'},life:{main:'Walk 30 min after meals',sub:'Aids digestion; don\'t lie down after eating\nStand up every hour'}},
-    },
-  },
-  shiRe:{
-    tagline:{'zh-CN':'内有湿热，身体在"发炎"','en':'Damp-heat inside — your body is "inflaming"'},
-    tcmMech:{'zh-CN':'湿热交蒸，三焦壅滞。肝胆疏泄失司，脾胃湿热蕴结，湿热之邪循经上犯，外溢肌肤，下注二便。','en':'Damp-heat steams together, triple-burner is congested. Liver-Gallbladder fails to spread Qi freely; Spleen-Stomach dampness-heat accumulates; damp-heat pathogen follows channels upward, overflows to skin, and flows down to bowel and bladder.'},
-    westMech:{'zh-CN':'Th17细胞过度活跃，IL-17、IL-6持续升高；肠道革兰阴性菌过度生长，LPS内毒素入血；皮肤微生物群失衡，痤疮丙酸杆菌增殖。','en':'Th17 cells are overactive with persistently elevated IL-17 and IL-6; overgrowth of gram-negative gut bacteria produces LPS entering blood; skin microbiome imbalance, Propionibacterium acnes overgrowth.'},
-    symptoms:{
-      'zh-CN':[{q:'面部油脂旺盛，容易长痤疮粉刺',explain:'湿热上蒸于面，热邪熏灼皮肤。对应皮肤微生物群失衡，痤疮丙酸杆菌过度增殖，皮脂腺分泌旺盛。'},{q:'口苦口干，大便偏黄黏腻，小便颜色深',explain:'湿热蕴结肝胆，胆汁上逆则口苦；湿热下注则大便黏滞，小便黄赤。'},{q:'身体容易感到燥热，心烦易怒',explain:'湿热扰心，肝气郁化热。对应Th17细胞因子持续升高，慢性炎症影响神经系统，诱发情绪波动。'}],
-      'en':[{q:'Oily face; prone to acne and pimples',explain:'Damp-heat steams upward to the face, heat scorches the skin. Corresponds to skin microbiome imbalance, Propionibacterium acnes overgrowth, and overactive sebaceous glands.'},{q:'Bitter or dry mouth; yellowish sticky stools; dark urine',explain:'Damp-heat accumulates in Liver-Gallbladder; bile counterflows causing bitter taste; damp-heat flows downward causing sticky stools and dark urine.'},{q:'Easily feel overheated; irritable and easily angered',explain:'Damp-heat disturbs the heart, Liver Qi stagnates into heat. Corresponds to persistently elevated Th17 cytokines, chronic inflammation affecting the nervous system, triggering mood swings.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'清热去火',icon:'🌊',items:['戒酒、戒辛辣，减少烧烤','绿豆汤，每周3次','保持大便通畅，必要时增加膳食纤维']},{phase:'第31-60天',title:'利湿清肠',icon:'🌿',items:['游泳加入计划，每周2次','蒲公英茶，每日饮用','作息规律，23点前必须入睡']},{phase:'第61-90天',title:'平衡内环境',icon:'⚖️',items:['益生菌加入饮食（调节Th17/Treg平衡）','皮肤状态评估（痤疮减少为改善标志）','重新测评，关注口苦口干改善']}],
-      'en':[{phase:'Days 1–30',title:'Clear Heat',icon:'🌊',items:['Quit alcohol and spicy food; reduce grilled food','Mung bean soup, 3×/week','Maintain regular bowel movements; add fiber if needed']},{phase:'Days 31–60',title:'Drain Dampness, Clear Intestines',icon:'🌿',items:['Add swimming, 2×/week','Dandelion tea daily','Regular schedule; must sleep before 11pm']},{phase:'Days 61–90',title:'Balance Internal Environment',icon:'⚖️',items:['Add probiotics to diet (regulate Th17/Treg balance)','Assess skin condition (fewer breakouts = improvement)','Retake assessment; note improvement in bitter taste/dry mouth']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'游泳，每周3次',sub:'清热利湿最佳运动\n微汗即止，勿过度'},diet:{main:'绿豆薏苡仁汤',sub:'每周3次，清热解毒\n戒酒戒辛辣是关键'},life:{main:'23点前入睡',sub:'熬夜直接加重湿热\n保持大便通畅'}},
-      'en':{ex:{main:'Swimming, 3×/week',sub:'Best exercise for damp-heat\nStop when lightly sweating'},diet:{main:'Mung Bean-Barley Soup',sub:'3×/week, clears heat and toxins\nQuitting alcohol & spicy food is key'},life:{main:'Sleep before 11pm',sub:'Late nights directly worsen damp-heat\nKeep bowel movements regular'}},
-    },
-  },
-  xueYu:{
-    tagline:{'zh-CN':'气血运行不畅，需要疏通管道','en':'Qi and blood circulation is blocked — the channels need clearing'},
-    tcmMech:{'zh-CN':'气滞血瘀或寒凝血瘀，脉络不通。血行迟滞，瘀血阻络，新血不生，脏腑失于濡养。','en':'Qi stagnation causing blood stasis, or cold congealing blood — channels are blocked. Blood flow stagnates, stasis obstructs channels, new blood cannot form, organs lose nourishment.'},
-    westMech:{'zh-CN':'血小板高聚集性，纤维蛋白原升高；微循环障碍使免疫细胞归巢效率降低；血管内皮功能受损与IL-6、CRP升高正相关；组织慢性缺氧加速细胞老化。','en':'High platelet aggregability, elevated fibrinogen; microcirculation disorder reduces immune cell homing efficiency; vascular endothelial dysfunction positively correlates with elevated IL-6 and CRP; chronic tissue hypoxia accelerates cellular aging.'},
-    symptoms:{
-      'zh-CN':[{q:'皮肤晦暗无光泽，容易出现色斑或瘀青',explain:'血行不畅，肌肤失养，瘀血停滞。对应微循环障碍，组织供氧不足，代谢废物堆积，皮肤色素沉着增加。'},{q:'面唇颜色偏暗紫，或舌头颜色偏紫暗',explain:'血瘀最直接的外在体征。对应末梢循环障碍，氧合血红蛋白减少，还原血红蛋白相对增多。'},{q:'身体容易出现固定位置的刺痛',explain:'瘀血阻络，不通则痛，痛有定处为瘀血特征。对应微循环障碍引起的组织缺氧性疼痛。'}],
-      'en':[{q:'Dull, lackluster skin; prone to dark spots or bruising',explain:'Blood flow is impaired, skin loses nourishment, stasis settles. Corresponds to microcirculation disorder, insufficient tissue oxygen supply, waste accumulation, and increased skin pigmentation.'},{q:'Dark or purplish complexion, lips, or tongue',explain:'Most direct external sign of blood stasis. Corresponds to peripheral circulatory disorder, decreased oxyhemoglobin, and relatively increased deoxyhemoglobin.'},{q:'Fixed stabbing pain at specific body locations',explain:'Blood stasis blocks channels — "where there is no flow, there is pain," fixed-location pain is the characteristic of blood stasis. Corresponds to tissue hypoxic pain from microcirculation disorder.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'疏通气血',icon:'🌊',items:['每小时起身活动，设置提醒','每日散步30分钟','山楂陈皮茶，每日饭后一杯']},{phase:'第31-60天',title:'活血化瘀',icon:'🌀',items:['冷热交替浴加入晨间程序','五禽戏鸟戏，每天10分钟','睡前腿部抬高15分钟']},{phase:'第61-90天',title:'巩固循环',icon:'💓',items:['有氧运动升级（慢跑代替散步）','皮肤光泽度评估（改善标志）','重新测评，关注色斑和疼痛变化']}],
-      'en':[{phase:'Days 1–30',title:'Open Qi-Blood Flow',icon:'🌊',items:['Stand and move every hour — set reminders','30-min daily walk','Hawthorn-tangerine peel tea after each meal']},{phase:'Days 31–60',title:'Activate Blood, Dissolve Stasis',icon:'🌀',items:['Add contrast bath to morning routine','Five-Animal Bird Play, 10 min/day','Elevate legs 15 min before sleep']},{phase:'Days 61–90',title:'Consolidate Circulation',icon:'💓',items:['Upgrade exercise (jogging instead of walking)','Assess skin luminosity (sign of improvement)','Retake assessment; note changes in spots and pain']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'五禽戏·鸟戏',sub:'每天10分钟展翅动作\n改善全身气血流通'},diet:{main:'山楂陈皮茶',sub:'每日饭后一杯\n活血化瘀，消食导滞'},life:{main:'每小时起身活动',sub:'设置手机提醒\n久坐是血瘀主因'}},
-      'en':{ex:{main:'Five-Animal Bird Play',sub:'10 min wing movements daily\nImproves whole-body Qi-blood flow'},diet:{main:'Hawthorn-Tangerine Peel Tea',sub:'One cup after each meal\nActivates blood, dissolves stasis'},life:{main:'Move every hour',sub:'Set phone reminders\nProlonged sitting is the main cause'}},
-    },
-  },
-  qiYu:{
-    tagline:{'zh-CN':'情绪是免疫的开关，需要打开','en':'Emotion is immunity\'s switch — it needs to be opened'},
-    tcmMech:{'zh-CN':'肝失疏泄，气机郁结。情志不畅则气机阻滞，郁则化火，或聚津成痰，心神失养。','en':'Liver fails to spread Qi freely; Qi mechanism becomes stagnant. When emotions are blocked, Qi stagnates; stagnation transforms into fire, or fluids accumulate into phlegm, and heart-spirit loses nourishment.'},
-    westMech:{'zh-CN':'心理神经免疫学（PNI）核心体质。慢性压力→HPA轴持续激活→皮质醇升高→T细胞增殖受抑、NK细胞活性降低30-50%。长期压力使感冒易感性增加2-3倍（Cohen等，NEJM 1991）。','en':'Core psychoneuroimmunology (PNI) constitution. Chronic stress → sustained HPA axis activation → elevated cortisol → suppressed T-cell proliferation, NK cell activity reduced 30–50%. Long-term stress increases cold susceptibility 2–3× (Cohen et al., NEJM 1991).'},
-    symptoms:{
-      'zh-CN':[{q:'情绪容易低落、郁闷，对事物缺乏兴趣',explain:'肝气郁结，心神失养。对应HPA轴持续激活，皮质醇慢性升高，5-羟色胺（血清素）合成受影响，90%血清素由肠道合成。'},{q:'容易紧张焦虑，对压力敏感，难以放松',explain:'肝气横逆，扰动心神。对应交感神经持续亢奋，副交感/迷走神经张力降低，心率变异性（HRV）下降。'},{q:'胸口有憋闷感，或肋骨两侧有胀痛',explain:'肝经气机郁滞，经络不畅。对应慢性肌肉紧张，膈肌活动受限，呼吸浅表，进一步抑制副交感神经。'}],
-      'en':[{q:'Prone to low mood or depression; lack of interest in things',explain:'Liver Qi stagnation, heart-spirit loses nourishment. Corresponds to sustained HPA axis activation, chronically elevated cortisol, and affected serotonin synthesis (90% of serotonin is produced in the gut).'},{q:'Prone to anxiety, sensitive to stress, difficulty relaxing',explain:'Liver Qi rebels horizontally, disturbing the heart-spirit. Corresponds to sustained sympathetic nervous overactivation, reduced parasympathetic/vagal tone, and decreased heart rate variability (HRV).'},{q:'Chest tightness or distending pain along the ribs',explain:'Liver channel Qi mechanism stagnation, channels are not free. Corresponds to chronic muscle tension, restricted diaphragm movement, shallow breathing, further suppressing the parasympathetic system.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'打开气结',icon:'🌬️',items:['每日腹式呼吸10分钟（早晚各一次）','户外散步，感受自然（每天30分钟）','开始写情绪日记']},{phase:'第31-60天',title:'调节神经',icon:'🧘',items:['太极拳入门课，每周3次','玫瑰花茉莉花茶，每日代茶饮','增加1次社交活动/周']},{phase:'第61-90天',title:'建立平衡',icon:'☯️',items:['评估睡眠质量和情绪状态','集体运动或瑜伽课加入计划','重新测评，关注焦虑和胸闷改善']}],
-      'en':[{phase:'Days 1–30',title:'Open the Stagnation',icon:'🌬️',items:['10 min abdominal breathing daily (morning and evening)','Outdoor walk to connect with nature (30 min/day)','Start keeping an emotion journal']},{phase:'Days 31–60',title:'Regulate the Nervous System',icon:'🧘',items:['Intro Tai Chi class, 3×/week','Rose-jasmine flower tea as daily tea','Add 1 social activity per week']},{phase:'Days 61–90',title:'Establish Balance',icon:'☯️',items:['Assess sleep quality and emotional state','Add group exercise or yoga to the plan','Retake assessment; note improvement in anxiety and chest tightness']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'腹式深呼吸',sub:'早晚各10分钟\n4-7-8呼吸法激活迷走神经'},diet:{main:'玫瑰茉莉花茶',sub:'每日代茶饮\n疏肝解郁，调节情绪'},life:{main:'户外散步+社交',sub:'每天30分钟户外\n每周1次有质量社交'}},
-      'en':{ex:{main:'Abdominal Deep Breathing',sub:'10 min morning and evening\n4-7-8 breathing activates vagal nerve'},diet:{main:'Rose-Jasmine Tea',sub:'Sip as daily tea\nSoothes Liver, relieves stagnation'},life:{main:'Outdoor Walk + Social',sub:'30 min outdoors daily\n1 quality social interaction/week'}},
-    },
-  },
-  teBing:{
-    tagline:{'zh-CN':'免疫需要平衡，不是单纯提升','en':'Immunity needs balance — not just boosting'},
-    tcmMech:{'zh-CN':'先天禀赋不足，卫表不固，营卫不和。肺脾肾三脏虚弱，难以抵御外邪；先天之精不足影响免疫耐受的建立，导致过敏反应频发。','en':'Innate constitution is insufficient; defensive surface is unstable; nutrients and defenses are disharmonious. Weakness of Lung, Spleen, and Kidney makes it difficult to resist pathogens; insufficient prenatal essence impairs immune tolerance, causing frequent allergic reactions.'},
-    westMech:{'zh-CN':'IgE介导的I型超敏反应过激，Th1/Th2严重偏向Th2；调节性T细胞（Treg）功能不足，免疫耐受建立障碍；肠道早期菌群定植异常（与剖宫产、抗生素使用相关）；遗传因素贡献率30-40%。','en':'IgE-mediated type-I hypersensitivity overactivation, severe Th1/Th2 imbalance toward Th2; insufficient regulatory T-cell (Treg) function, impaired immune tolerance; abnormal early gut microbiome colonization (associated with C-section delivery and antibiotic use); genetic factors contribute 30–40%.'},
-    symptoms:{
-      'zh-CN':[{q:'对花粉、灰尘、某些食物或药物容易过敏',explain:'IgE介导的I型超敏反应。Th2细胞过度活跃，IgE抗体大量产生，与肥大细胞结合后遇过敏原即释放组胺等炎症介质。'},{q:'季节变化或温差大时出现鼻痒、打喷嚏、皮肤瘙痒',explain:'卫气不固，外邪易侵。对应呼吸道黏膜IgE致敏，温差变化诱发肥大细胞脱颗粒，释放组胺和白三烯。'},{q:'有过敏性鼻炎、哮喘、湿疹等过敏性疾病史',explain:'特禀质的典型表现，提示全身性Th1/Th2失衡。Treg细胞功能不足使免疫系统无法对无害抗原建立耐受。'}],
-      'en':[{q:'Easily allergic to pollen, dust, certain foods or medications',explain:'IgE-mediated type-I hypersensitivity. Th2 cells are overactive, producing large amounts of IgE antibodies; when bound to mast cells and encountering allergens, they release histamine and other inflammatory mediators.'},{q:'Nasal itching, sneezing, or skin itching during seasonal/temperature changes',explain:'Defensive Qi is unstable, pathogens invade easily. Corresponds to IgE sensitization of respiratory mucosa; temperature changes trigger mast cell degranulation, releasing histamine and leukotrienes.'},{q:'History of allergic rhinitis, asthma, eczema or other allergic diseases',explain:'Typical manifestation of Allergic Constitution, indicating systemic Th1/Th2 imbalance. Insufficient Treg cell function prevents the immune system from establishing tolerance to harmless antigens.'}],
-    },
-    phases:{
-      'zh-CN':[{phase:'第1-30天',title:'固表止敏',icon:'🛡️',items:['记录过敏日记，找出所有诱发因素','每日食用含益生菌食品（酸奶）','玉屏风散开始服用（需咨询中医）']},{phase:'第31-60天',title:'调节免疫',icon:'⚖️',items:['户外运动加入，每周3次','减少家中尘螨（换洗床品频率增加）','益生菌坚持，评估过敏频率']},{phase:'第61-90天',title:'建立耐受',icon:'🌱',items:['评估过敏发作频率和程度','运动习惯已建立，持续维持','重新测评，关注过敏症状改善']}],
-      'en':[{phase:'Days 1–30',title:'Strengthen Defenses',icon:'🛡️',items:['Keep an allergy journal; identify all triggers','Eat probiotic-containing foods daily (yogurt)','Start Jade Screen formula (consult a TCM practitioner)']},{phase:'Days 31–60',title:'Regulate Immunity',icon:'⚖️',items:['Add outdoor exercise, 3×/week','Reduce dust mites at home (wash bedding more frequently)','Continue probiotics; assess allergy frequency']},{phase:'Days 61–90',title:'Build Tolerance',icon:'🌱',items:['Assess allergy episode frequency and severity','Exercise habit is established — maintain it','Retake assessment; note improvement in allergy symptoms']}],
-    },
-    actions:{
-      'zh-CN':{ex:{main:'户外有氧运动',sub:'每周3次，强度适中\n增加自然暴露，激活Treg'},diet:{main:'益生菌+玉屏风',sub:'每日酸奶+玉屏风散\n调节Th1/Th2平衡'},life:{main:'过敏日记+预防',sub:'记录诱发因素\n提前2-3周开始防护'}},
-      'en':{ex:{main:'Outdoor Aerobic Exercise',sub:'3×/week, moderate intensity\nIncrease nature exposure, activate Treg'},diet:{main:'Probiotics + Jade Screen',sub:'Daily yogurt + Jade Screen formula\nRegulate Th1/Th2 balance'},life:{main:'Allergy Journal + Prevention',sub:'Record all triggers\nStart prevention 2–3 weeks early'}},
-    },
-  },
-};
-
-const CONST_ORDER=['qiXu','yangXu','yinXu','tanShi','shiRe','xueYu','qiYu','teBing'];
 
 function getParams(){
   const p=new URLSearchParams(location.search);
@@ -478,7 +311,7 @@ function renderPage(){
   const westMech=getLocalizedField(data,'westMech');
   const symptoms=data.symptoms[lang]||data.symptoms['en']||[];
   const phases=data.phases[lang]||data.phases['en']||[];
-  const actions=data.actions[lang]||data.actions['en']||data.actions['zh-CN'];
+  const actions=data.actions[lang]||data.actions['en']||{};
 
   const highSyms=symptoms.filter((_,i)=>syms.includes(i));
   const showSyms=highSyms.length>0?highSyms:symptoms.slice(0,2);
@@ -645,7 +478,7 @@ function renderPage(){
           <div class="sec-badge" style="background:${CONSTS.find(x=>x.id===c2)?.light||'#eee'}">${CONSTS.find(x=>x.id===c2)?.icon||''}</div>
           <div class="sec-info">
             <div class="sec-info-name" style="color:${CONSTS.find(x=>x.id===c2)?.color||'#888'}">${CONSTS.find(x=>x.id===c2)?.name||c2}</div>
-            <div class="sec-info-desc">${getLocalizedField(REPORT_DB[c2],'tagline')}. ${t('secConstDesc')}<b>${(REPORT_DB[c2].actions[lang]||REPORT_DB[c2].actions['en']||REPORT_DB[c2].actions['zh-CN']).life.main}</b>${t('secConstSuffix')}${CONSTS.find(x=>x.id===c2)?.name||c2}${t('secConstSuffix2')}</div>
+            <div class="sec-info-desc">${getLocalizedField(REPORT_DB[c2],'tagline')}. ${t('secConstDesc')}<b>${((REPORT_DB[c2].actions[lang]||REPORT_DB[c2].actions['en']||{}).life||{}).main||''}</b>${t('secConstSuffix')}${CONSTS.find(x=>x.id===c2)?.name||c2}${t('secConstSuffix2')}</div>
           </div>
         </div>
       </div>
