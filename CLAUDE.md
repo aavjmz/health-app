@@ -38,5 +38,4 @@ docker exec xray-nginx nginx -s reload
 ## 注意事项
 
 - `Dockerfile`、`docker-compose.yml`、`nginx.conf`、`deploy.sh` 是备用参考文件，当前生产环境未使用（已集成到 xray-nginx）
-- `vercel.json` 保留用于 Vercel 备用部署（cleanUrls: true）
 - 修改 `trojan.conf` 时注意保留 Xray WebSocket 代理的 `location /7bef9f0437bcd213` 块
