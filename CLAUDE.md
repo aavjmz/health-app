@@ -28,8 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **更新静态文件到生产环境：**
 ```bash
-cp -r index.html report.html about.html privacy.html site.css i18n.js report-i18n.js \
-      constitution sitemap.xml robots.txt ads.txt /root/xray-deploy/nginx/html/
+cp -r index.html report.html about.html privacy.html site.css i18n.js report-i18n.js constitution sitemap.xml robots.txt ads.txt /root/xray-deploy/nginx/html/
 # 无需重启 nginx，静态文件立即生效
 ```
 
