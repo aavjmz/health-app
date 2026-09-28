@@ -6,6 +6,8 @@
 
 - `/` — 体质问卷（16题，覆盖8种体质）
 - `/report` — 个性化体质报告
+- `/constitution/` — 体质百科（九种体质详解）
+- `/about`、`/privacy` — 关于我们、隐私政策
 
 ## 本地预览
 
@@ -13,4 +15,4 @@
 
 ## 部署
 
-将 `index.html`、`report.html` 复制到服务器 `/root/xray-deploy/nginx/html/` 即可生效。
+将站点文件复制到服务器 `/root/xray-deploy/nginx/html/` 即可生效，完整命令见 `CLAUDE.md`。
