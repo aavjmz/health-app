@@ -2,13 +2,14 @@
 
 <html lang="zh-CN">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4136658490563590"
-     crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-4136658490563590">
-<title>TCM Constitution · Immunity Self-Assessment</title>
+<title>中医体质辨识 · 免疫力自测</title>
+<meta name="description" content="免费的中医体质自测问卷，参照《中医体质分类与判定》标准，几分钟了解你属于气虚、阳虚、阴虚、痰湿、湿热、血瘀、气郁、特禀还是平和质，并获得个性化调养建议。">
+<link rel="canonical" href="https://dengw.xyz/">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -149,7 +150,59 @@ body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;heig
   </div>
   <div id="progArea"></div>
   <div id="pages"></div>
+
+  <!-- 静态介绍区：仅在问卷首屏显示，供读者与搜索引擎阅读 -->
+  <div id="siteIntro" class="site-intro">
+    <section class="sec">
+      <h2>什么是中医体质？</h2>
+      <p>体质是每个人在先天遗传和后天生活环境共同作用下形成的、相对稳定的身心特质。同样是换季，有人毫无感觉，有人却反复感冒；同样吃一顿火锅，有人第二天就长痘、口干——这些差异背后，往往就是体质的不同。</p>
+      <p>现代中医体质学说将中国人的体质归纳为九种类型，中华中医药学会于 2009 年发布了《中医体质分类与判定》标准（ZYYXH/T157-2009）。了解自己的体质，可以帮助你更有针对性地安排饮食、运动和作息，而不是盲目地"补"。</p>
+    </section>
+    <section class="sec">
+      <h2>九种体质速览</h2>
+      <div class="type-grid">
+        <a class="type-card" style="--c:#2E7D6B" href="constitution/pinghe.html"><b>☯️ 平和质</b><span>气血调和、阴阳平衡，是理想的健康体质</span></a>
+        <a class="type-card" style="--c:#2E7D6B" href="constitution/qixu.html"><b>🌿 气虚质</b><span>元气不足，容易疲乏、气短、反复感冒</span></a>
+        <a class="type-card" style="--c:#1C5FAF" href="constitution/yangxu.html"><b>❄️ 阳虚质</b><span>阳气不足，怕冷、手脚冰凉、喜热饮</span></a>
+        <a class="type-card" style="--c:#C0392B" href="constitution/yinxu.html"><b>🔥 阴虚质</b><span>阴液亏少，口干咽燥、手足心热、睡眠浅</span></a>
+        <a class="type-card" style="--c:#2E8B57" href="constitution/tanshi.html"><b>💧 痰湿质</b><span>痰湿凝聚，体形偏胖、身体沉重、口黏腻</span></a>
+        <a class="type-card" style="--c:#B7770D" href="constitution/shire.html"><b>☀️ 湿热质</b><span>湿热内蕴，面部油腻、易长痘、口苦口干</span></a>
+        <a class="type-card" style="--c:#8B2A2A" href="constitution/xueyu.html"><b>🌸 血瘀质</b><span>血行不畅，肤色晦暗、易有瘀斑、固定刺痛</span></a>
+        <a class="type-card" style="--c:#6B3FA0" href="constitution/qiyu.html"><b>🌙 气郁质</b><span>气机郁滞，情绪低落、敏感多虑、胸闷叹气</span></a>
+        <a class="type-card" style="--c:#1A7A6E" href="constitution/tebing.html"><b>⚡ 特禀质</b><span>过敏体质，易对花粉、尘螨、食物等过敏</span></a>
+      </div>
+    </section>
+    <section class="sec">
+      <h2>测评如何进行</h2>
+      <ol>
+        <li><strong>填写基础信息</strong>：选择年龄段和生活方式，用于调整建议。</li>
+        <li><strong>回答约 30 道问题</strong>：按照最近一段时间的真实感受，选择"没有、偶尔、经常、总是"。</li>
+        <li><strong>获得体质报告</strong>：查看八种偏颇体质的倾向评分、中西医双维度解读、90 天调养路线图和每日打卡工具。</li>
+      </ol>
+      <p>整个过程约 3～5 分钟，完全免费，无需注册。你的答案只在浏览器本地计算，不会上传到服务器。</p>
+    </section>
+    <section class="sec faq">
+      <h2>常见问题</h2>
+      <details><summary>体质自测结果准确吗？</summary><p>问卷参照体质分类标准的判定条目设计，可以反映你近期的体质倾向，适合作为日常健康管理的参考。但自测问卷无法替代专业中医师的望闻问切，如需准确辨识，建议到正规中医院就诊。</p></details>
+      <details><summary>一个人可能有好几种体质吗？</summary><p>可以。很多人以一种体质为主，同时兼有其他体质倾向，例如"气虚兼痰湿"。报告会同时显示主体质和兼夹体质，调养时以主体质为主、兼顾其他。</p></details>
+      <details><summary>体质可以改变吗？</summary><p>体质相对稳定，但并非一成不变。饮食、作息、运动和情绪都会影响体质，坚持有针对性的调养，偏颇体质可以逐渐向平和质方向改善。建议每 3 个月重新测评一次，观察变化。</p></details>
+      <details><summary>测评结果能用来诊断疾病吗？</summary><p>不能。体质辨识属于健康状态评估，不是疾病诊断。如有明显不适或持续症状，请及时就医。</p></details>
+      <details><summary>想深入了解某种体质怎么办？</summary><p>可以阅读<a href="constitution/index.html">体质百科</a>，其中详细介绍了每种体质的特征、成因、饮食运动起居调养方法和常见误区。</p></details>
+    </section>
+    <div class="note">⚠️ 本测评参照《中医体质分类与判定》标准，结合现代免疫学研究设计，仅供健康参考，不作为医学诊断依据。如有健康问题，请咨询专业医师。</div>
+  </div>
 </div>
+
+<footer class="site-footer"><div class="site-footer-inner">
+  <nav>
+    <a href="index.html">体质测评</a>
+    <a href="constitution/index.html">体质百科</a>
+    <a href="about.html">关于我们</a>
+    <a href="privacy.html">隐私政策</a>
+  </nav>
+  <p>本站内容仅供健康科普参考，不构成医学诊断或治疗建议。如有不适，请及时就医。</p>
+  <p>© 2026 dengw.xyz · 中医体质自测</p>
+</div></footer>
 
 <script src="i18n.js"></script>
 <script>
@@ -177,6 +230,7 @@ function updateProg(){
   const TOTAL=getTOTAL();
   const header=document.getElementById('mainHeader');
   const el=document.getElementById('progArea');
+  document.getElementById('siteIntro').style.display=step===0?'':'none';
   if(step===0){
     header.style.display='';
     el.style.display='';
