@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `index.html` — 体质问卷（16题，覆盖8种体质）
 - `report.html` — 个性化体质报告（`noindex`，URL 参数个性化）
 - `constitution/*.html` — 体质百科（9 篇静态文章 + 索引页），`about.html`、`privacy.html`
-- `guide/*.html` — 养生指南（9 篇原创文章 + 索引页：八段锦、舌象、食材性味、秋冬养生、药食同源、睡眠、兼夹体质、计分原理）
+- `guide/*.html` — 养生指南（18 篇原创文章 + 按分类分组的索引页：四季调养、饮食与茶饮、功法穴位泡脚、常见困扰、体质自查与测评）
 - `site.css` — 静态内容页、首页介绍区、页脚共用样式
 - `sitemap.xml`、`robots.txt`、`ads.txt` — SEO 与 AdSense 配置
 - 无构建步骤，无依赖，无测试框架
