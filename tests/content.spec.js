@@ -3,7 +3,8 @@ const { test, expect } = require('@playwright/test');
 const BASE = 'http://localhost:8080';
 const SLUGS = ['pinghe', 'qixu', 'yangxu', 'yinxu', 'tanshi', 'shire', 'xueyu', 'qiyu', 'tebing'];
 const GUIDES = ['baduanjin', 'shexiang', 'shicai', 'qiuji', 'dongji', 'yaoshi', 'shuimian', 'jianjia', 'jifen',
-  'chunji', 'xiaji', 'chayin', 'xuewei', 'paojiao', 'qushi', 'ganmao', 'shanghuo', 'jiuzuo'];
+  'chunji', 'xiaji', 'chayin', 'xuewei', 'paojiao', 'qushi', 'ganmao', 'shanghuo', 'jiuzuo',
+  'shipu-qixu', 'shipu-tanshi', 'shipu-yinxu', 'hanlu', 'kuaizou', 'qingxu', 'gengnianqi', 'laonian', 'wenda'];
 const PAGES = ['constitution/index.html', ...SLUGS.map(s => `constitution/${s}.html`), 'guide/index.html', ...GUIDES.map(s => `guide/${s}.html`), 'about.html', 'privacy.html'];
 
 test.describe('Static content pages', () => {
