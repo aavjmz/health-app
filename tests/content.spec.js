@@ -2,7 +2,8 @@ const { test, expect } = require('@playwright/test');
 
 const BASE = 'http://localhost:8080';
 const SLUGS = ['pinghe', 'qixu', 'yangxu', 'yinxu', 'tanshi', 'shire', 'xueyu', 'qiyu', 'tebing'];
-const PAGES = ['constitution/index.html', ...SLUGS.map(s => `constitution/${s}.html`), 'about.html', 'privacy.html'];
+const GUIDES = ['baduanjin', 'shexiang', 'shicai', 'qiuji', 'dongji', 'yaoshi', 'shuimian', 'jianjia', 'jifen'];
+const PAGES = ['constitution/index.html', ...SLUGS.map(s => `constitution/${s}.html`), 'guide/index.html', ...GUIDES.map(s => `guide/${s}.html`), 'about.html', 'privacy.html'];
 
 test.describe('Static content pages', () => {
   for (const path of PAGES) {
@@ -32,6 +33,12 @@ test.describe('Static content pages', () => {
     expect(html).toContain('什么是中医体质');
     expect(html).toContain('constitution/qixu.html');
     // 问卷页不加载广告脚本
+    expect(html).not.toContain('adsbygoogle.js');
+  });
+
+  test('report page does not load the ad script', async ({ request }) => {
+    // 报告页无参数时几乎没有静态内容，不能加载广告
+    const html = await (await request.get(`${BASE}/report.html`)).text();
     expect(html).not.toContain('adsbygoogle.js');
   });
 
